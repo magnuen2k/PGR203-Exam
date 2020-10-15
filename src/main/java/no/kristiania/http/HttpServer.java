@@ -1,25 +1,31 @@
 package no.kristiania.http;
 
+import no.kristiania.db.Member;
+import no.kristiania.db.MemberDao;
+import org.postgresql.ds.PGSimpleDataSource;
+
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+
 
 public class HttpServer {
 
     private File contentRoot;
-
-    // Arraylist to store members (Not in use right now, made for POST requests)
-    private List<String> memberNames = new ArrayList<>();
+    private MemberDao memberDao;
 
     // Constructor
-    public HttpServer(int port) throws IOException {
+    public HttpServer(int port, DataSource dataSource) throws IOException {
+        memberDao = new MemberDao(dataSource);
+
         ServerSocket serverSocket = new ServerSocket(port);
 
         // Creates Runnable to contain the code to be executed in a separate thread
@@ -30,7 +36,7 @@ public class HttpServer {
                     // Get the socket from client connection in return
                     Socket clientSocket = serverSocket.accept();
                     handleRequest(clientSocket); // Calling to handle request
-                } catch (IOException e) {
+                } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -39,15 +45,11 @@ public class HttpServer {
         // New Thread for handling the listener socket (serverSocket)
         Thread t = new Thread(runnable);
         t.start(); // Start executing the thread code defined in runnable
-
-        // Adding sample users
-        memberNames.add("Magnus - magnus@magnus.no");
-        memberNames.add("Lauri - Lauri@lauri.no");
     }
 
     // Will be executed per client
     // Does not care about request Method
-    private void handleRequest(Socket clientSocket) throws IOException {
+    private void handleRequest(Socket clientSocket) throws IOException, SQLException {
         // Get back request as string
         // Request can look like this: GET /index.html HTTP/1.1
         HttpMessage request = new HttpMessage(clientSocket);
@@ -58,6 +60,10 @@ public class HttpServer {
         // This can look like: /index.html
         String requestTarget = requestLine.split(" ")[1];
 
+        // Split requestLine on space and put element 0 in requestMethod
+        // This can look like: GET etc
+        String requestMethod = requestLine.split(" ")[0];
+
 
         // Position of "?" will make sure we can find the parameters in the request
         // This can be: echo?body=hello where "body=hello" is the parameter
@@ -67,28 +73,43 @@ public class HttpServer {
         // If there is no parameters set requestPath to just requestTarget
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
+        if(requestMethod.equals("POST")) {
+            QueryString requestParameter = new QueryString(request.getBody());
+
+            // Getting data from POST request
+            String firstName = requestParameter.getParameter("first_name");
+            String lastName = requestParameter.getParameter("last_name");
+            String email = requestParameter.getParameter("email_address");
+            String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
+
+            Member member = new Member(firstName, lastName, decodedEmail);
+
+            memberDao.insertMember(member);
+        }
+
         if (requestPath.equals("/echo")) {
             handleEcho(clientSocket, requestTarget, questionPos);
         } else if (requestPath.equals("/api/projectMembers")){
-            String statusCode = "200";
-            String body = "";
-
-            for (int i = 0; i < memberNames.size(); i++) {
-                body += memberNames.get(i) + "<br>\n";
-            }
-
-            // Create response
-            String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                    "Content-Length: " + body.length() + "\r\n" +
-                    "Content-Type: text/plain\r\n" +
-                    "\r\n" +
-                    body;
-
-            // Send back response to client
-            clientSocket.getOutputStream().write(response.getBytes());
+            handleProjectMembers(clientSocket);
         } else {
             handleResource(clientSocket, requestPath);
         }
+    }
+
+    private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
+        String statusCode = "200";
+
+        String body = "<ul>" + memberDao.list() + "</ul>";
+
+        // Create response
+        String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
+                "Content-Length: " + body.length() + "\r\n" +
+                "Content-Type: text/plain\r\n" +
+                "\r\n" +
+                body;
+
+        // Send back response to client
+        clientSocket.getOutputStream().write(response.getBytes());
     }
 
     private void handleResource(Socket clientSocket, String requestPath) throws IOException {
@@ -178,7 +199,12 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(8080);
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/taskmanager");
+        dataSource.setUser("projectadmin");
+        dataSource.setPassword("godpizza"); // Password should be in a separate file !!
+
+        HttpServer server = new HttpServer(8080, dataSource);
 
         // Make sure only files form resources are available
         server.setContentRoot(new File("src/main/resources"));
@@ -189,9 +215,5 @@ public class HttpServer {
 
     public void setContentRoot(File contentRoot) {
         this.contentRoot = contentRoot;
-    }
-
-    public List<String> getMemberNames() {
-        return memberNames;
     }
 }
