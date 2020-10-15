@@ -47,6 +47,10 @@ public class HttpServer {
         t.start(); // Start executing the thread code defined in runnable
     }
 
+    public HttpServer(int port) throws IOException {
+        this(port, null);
+    }
+
     // Will be executed per client
     // Does not care about request Method
     private void handleRequest(Socket clientSocket) throws IOException, SQLException {
