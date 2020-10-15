@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <link rel="stylesheet" href="./style/main.css">
+    <!--
+        link to animate library
+     -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+        <ul>
+            <div class="testDiv animate__animated animate__fadeInDown "><p style="font-size: 12px; display: inline;">the</p><strong>B</strong><p style="color: white; display: inline">oys</p> <strong>A</strong><p style="color: white; display: inline">ctivator</p></div>
+            <li>HomeOfRPs</li>
+            <li>AddNewRP</li>
+            <li>About</li>
+        </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div>
+            <h2 class="animate__animated animate__fadeInLeft">All Roleplayers</h2>
+            <div class="separator-line animate__animated animate__fadeInUp"></div>
+        </div>
+
+        <div id="projectMembers"></div>
+
+        <div class="separator-line animate__animated animate__fadeInUp"></div>
+
+        <!-- Placeholders for fun! -->
+        <div class="images">
+            <img class="img-yes animate__animated animate__fadeInLeft" src="img/blueman.png" alt="apetor">
+            <img class="img-yes animate__animated animate__fadeInUp" src="img/kaivid.png" alt="furry">
+            <img class="img-yes animate__animated animate__fadeInDown" src="img/rpandchill.png" alt="apetor">
+            <img class="img-yes animate__animated animate__fadeInRight" src="img/dragonslayer.png" alt="apetor">
+        </div>
+
+        <div class="separator-line animate__animated animate__fadeInUp"></div>
+
+        <div class="add-worker animate__animated animate__fadeInUp">
+            <a href="newWorker.html">Add new <p style="display: inline; color: #eb5a55;">Roleplayer</p></a>
+        </div>
+    </main>
+    <script>
+        fetch("/api/projectMembers").then(response => response.text()).then(html => {
+            document.getElementById("projectMembers").innerHTML = html;
+        });
+    </script>
+</body>
+</html>
