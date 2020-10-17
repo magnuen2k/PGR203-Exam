@@ -4,12 +4,10 @@ import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
+import software.amazon.awssdk.core.Response;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
@@ -121,9 +119,42 @@ public class HttpServer {
     }
 
     private void handleResource(Socket clientSocket, String requestPath) throws IOException {
-        String statusCode = "200";
-        String body = "<strong>Welcome to RP</strong>!";
-        // No resource requested
+        try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
+            if(inputStream == null) {
+                String body = requestPath + " does not exist";
+                String response = "HTTP/1.1 404 Not Found\r\n" +
+                        "Content-Length: " + body.length() + "\r\n" +
+                        "Connection: close\r\n" +
+                        "\r\n" +
+                        body;
+                clientSocket.getOutputStream().write(response.getBytes());
+            }
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            inputStream.transferTo(buffer);
+
+            // If the file is HTML, make sure contentType is "text/html"
+            String contentType = "text/plain";
+            if (requestPath.endsWith(".html")) {
+                contentType = "text/html";
+            }
+
+            // If the file is CSS, make sure contentType is "text/css"
+            if (requestPath.endsWith(".css")) {
+                contentType = "text/css";
+            }
+
+            String response = "HTTP/1.1 200 OK\r\n" +
+                    "Content-Length: " + buffer.toByteArray().length + "\r\n" +
+                    "Connection: close\r\n" +
+                    "Content-Type: " + contentType + "\r\n" +
+                    "\r\n";
+            clientSocket.getOutputStream().write(response.getBytes());
+            clientSocket.getOutputStream().write(buffer.toByteArray());
+        } catch (NullPointerException err) {
+            System.out.println("NullPointerException caught!");
+        }
+
+       /* // No resource requested
         boolean resourceRequested = true;
         boolean resourceExists = false;
         if (requestPath.equals("/")) {
@@ -181,7 +212,7 @@ public class HttpServer {
                 body;
 
         // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
+        clientSocket.getOutputStream().write(response.getBytes());*/
     }
 
     private void handleEcho(Socket clientSocket, String requestTarget, int questionPos) throws IOException {
@@ -226,7 +257,7 @@ public class HttpServer {
         HttpServer server = new HttpServer(8080, dataSource);
 
         // Make sure only files form resources are available
-        server.setContentRoot(new File("src/main/resources"));
+       /* server.setContentRoot(new File("src/main/resources"));*/
 
         System.out.println("To interact with the server, go to this URL");
         System.out.println("localhost:8080");

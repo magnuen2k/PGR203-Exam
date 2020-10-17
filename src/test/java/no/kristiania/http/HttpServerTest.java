@@ -43,8 +43,7 @@ class HttpServerTest {
     @Test
     void shouldReturnFileFromDisk() throws IOException {
         HttpServer server = new HttpServer(5555);
-        File contentRoot = new File("target/");
-        server.setContentRoot(contentRoot);
+        File contentRoot = new File("target/test-classes");
 
         String fileContent = "Hello World " + new Date();
         Files.writeString(new File(contentRoot, "test.txt").toPath(), fileContent);
@@ -69,8 +68,7 @@ class HttpServerTest {
     @Test
     void affirmContentTypeTxt() throws IOException {
         HttpServer server = new HttpServer(30056);
-        File contentRoot = new File("target/");
-        server.setContentRoot(contentRoot);
+        File contentRoot = new File("target/test-classes");
 
         Files.writeString(new File(contentRoot, "Hei.txt").toPath(), "Hei");
 
@@ -88,15 +86,4 @@ class HttpServerTest {
         HttpClient client = new HttpClient("localhost", 2227, "Hei");
         assertEquals(404, client.getStatusCode());
     }
-
-    @Test
-    void affirmStatusCodeIfFileExists() throws IOException {
-        HttpServer server = new HttpServer(2228);
-        File contentRoot = new File("target/");
-        server.setContentRoot(contentRoot);
-
-        HttpClient client = new HttpClient("localhost", 2228, "index.html");
-        assertEquals(200, client.getStatusCode());
-    }
-
 }
