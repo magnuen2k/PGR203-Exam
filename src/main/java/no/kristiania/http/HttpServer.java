@@ -2,11 +2,13 @@ package no.kristiania.http;
 
 import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
+import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.Properties;
 
 
 public class HttpServer {
@@ -107,6 +110,7 @@ public class HttpServer {
 
         // Create response
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
+                "Connection: close\r\n" +
                 "Content-Length: " + body.length() + "\r\n" +
                 "Content-Type: text/plain\r\n" +
                 "\r\n" +
@@ -137,6 +141,7 @@ public class HttpServer {
             body = requestPath + " does not exist";
             String response = "HTTP/1.1 404 Not Found\r\n" +
                     "Content-Length: " + body.length() + "\r\n" +
+                    "Connection: close\r\n" +
                     "\r\n" +
                     body;
             clientSocket.getOutputStream().write(response.getBytes());
@@ -158,6 +163,7 @@ public class HttpServer {
         // Create response
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                 "Content-Length: " + file.length() + "\r\n" +
+                "Connection: close\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
                 "\r\n";
 
@@ -169,6 +175,7 @@ public class HttpServer {
         // Create response
         response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                 "Content-Length: " + body.length() + "\r\n" +
+                "Connection: close\r\n" +
                 "Content-Type: text/plain\r\n" +
                 "\r\n" +
                 body;
@@ -194,6 +201,7 @@ public class HttpServer {
         // Create response
         String response = "HTTP/1.1 " + returnCode + " OK\r\n" +
                 "Content-Length: " + returnBody.length() + "\r\n" +
+                "Connection: close\r\n" +
                 "Content-Type: text/plain\r\n" +
                 "\r\n" +
                 returnBody;
@@ -203,10 +211,17 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
+        Properties properties = new Properties();
+        try(FileReader fileReader = new FileReader("pgr203.properties")) {
+            properties.load(fileReader);
+        }
+
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/taskmanager");
-        dataSource.setUser("projectadmin");
-        dataSource.setPassword("godpizza"); // Password should be in a separate file !!
+        dataSource.setUrl(properties.getProperty("dataSource.url"));
+        dataSource.setUser(properties.getProperty("dataSource.username"));
+        dataSource.setPassword(properties.getProperty("dataSource.password"));
+
+        Flyway.configure().dataSource(dataSource).load().migrate();
 
         HttpServer server = new HttpServer(8080, dataSource);
 

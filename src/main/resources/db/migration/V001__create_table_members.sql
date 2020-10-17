@@ -1,0 +1,1 @@
+create table members (id serial primary key, first_name varchar(30)  not null, last_name varchar(30)  not null, email varchar(100) not null)
