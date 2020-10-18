@@ -4,6 +4,9 @@ import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.Response;
 
 import javax.sql.DataSource;
@@ -22,6 +25,7 @@ public class HttpServer {
 
     private File contentRoot;
     private MemberDao memberDao;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
@@ -59,7 +63,7 @@ public class HttpServer {
         // Request can look like this: GET /index.html HTTP/1.1
         HttpMessage request = new HttpMessage(clientSocket);
         String requestLine = request.getStartLine();
-        System.out.println(requestLine);
+        logger.info(requestLine);
 
         // Split requestLine on space and put element 1 in requestTarget
         // This can look like: /index.html
@@ -79,32 +83,49 @@ public class HttpServer {
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
         if(requestMethod.equals("POST")) {
-            QueryString requestParameter = new QueryString(request.getBody());
-
-            // Getting data from POST request
-            String firstName = requestParameter.getParameter("first_name");
-            String lastName = requestParameter.getParameter("last_name");
-            String email = requestParameter.getParameter("email_address");
-            String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
-
-            Member member = new Member(firstName, lastName, decodedEmail);
-
-            memberDao.insertMember(member);
+            handleInsert(request, clientSocket);
         }
-
-        if (requestPath.equals("/echo")) {
-            handleEcho(clientSocket, requestTarget, questionPos);
-        } else if (requestPath.equals("/api/projectMembers")){
-            handleProjectMembers(clientSocket);
-        } else {
-            handleResource(clientSocket, requestPath);
+        else {
+            if (requestPath.equals("/echo")) {
+                handleEcho(clientSocket, requestTarget, questionPos);
+            } else if (requestPath.equals("/api/projectMembers")){
+                handleProjectMembers(clientSocket);
+            } else {
+                handleResource(clientSocket, requestPath);
+            }
         }
+    }
+
+    private void handleInsert(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
+        QueryString requestParameter = new QueryString(request.getBody());
+
+        // Getting data from POST request
+        String firstName = requestParameter.getParameter("first_name");
+        String lastName = requestParameter.getParameter("last_name");
+        String email = requestParameter.getParameter("email_address");
+        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
+
+        Member member = new Member(firstName, lastName, decodedEmail);
+
+        memberDao.insertMember(member);
+        String body = "Okay";
+        String response = "HTTP/1.1 200 OK\r\n" +
+                "Connection: close\r\n" +
+                "Content-Length: " + body.length() + "\r\n" +
+                "\r\n" +
+                body;
+        // Write the response back to the client
+        clientSocket.getOutputStream().write(response.getBytes());
     }
 
     private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
         String statusCode = "200";
 
-        String body = "<ul>" + memberDao.list() + "</ul>";
+        String body = "<ul>";
+        for (Member member : memberDao.list()) {
+            body += "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>";
+        }
+        body += "</ul>";
 
         // Create response
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
@@ -259,8 +280,7 @@ public class HttpServer {
         // Make sure only files form resources are available
        /* server.setContentRoot(new File("src/main/resources"));*/
 
-        System.out.println("To interact with the server, go to this URL");
-        System.out.println("localhost:8080");
+        logger.info("To interact with the server, go to 'localhost:8080/index.html'");
     }
 
     public void setContentRoot(File contentRoot) {

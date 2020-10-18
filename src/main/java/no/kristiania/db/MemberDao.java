@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -62,17 +64,17 @@ public class MemberDao {
 
     // List all members in Database
     // Passing in sql statement - SELECT * - loop through result of select and return a List with all members
-    public String list() throws SQLException {
+    public List<Member> list() throws SQLException {
         // Make connection to database
         try (Connection connection = dataSource.getConnection()) {
             // Create statement
             try (PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM members")) {
                 // Execute statement and store result in variable
                 try (ResultSet res = selectStatement.executeQuery()) {
-                    String members = "";
-                    // Loop through result of sql query and build a response string
+                    List<Member> members = new ArrayList<>();
+                    // Loop through result of sql query and build a list with all members
                     while(res.next()){
-                        members += "<li>Name: " + res.getString("first_name") + " " + res.getString("last_name") + " - Email: " + res.getString("email") + "</li>";
+                         members.add(mapRowToMember(res));
                     }
                     return members;
                 }

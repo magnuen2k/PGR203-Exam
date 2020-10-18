@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add project member | KristianiaProject</title>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>
+
+<nav class="nav2">
+    <div class="container">
+        <ul>
+            <div class="testDiv animate__animated animate__fadeInDown "><strong>R</strong><p style="color: white; display: inline">P</p> <strong>H</strong><p style="color: white; display: inline">all of </p><strong>F</strong><p style="color: white; display: inline">ame</p></div>
+            <li><a href="index.html">Home Of RPs</a></li>
+            <li><a href="newMember.html">Add New RP</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container">
+    <h1>Add project member</h1>
+    <form method="POST" action="/api/members" id="form-test">
+        <div><label>First name: <input type="text" name="first_name" /></label></div>
+        <div><label>Last name: <input type="text" name="last_name" /></label></div>
+        <div><label>Email: <input type="email" name="email_address" /></label></div>
+        <button id="btn-yes">Add RP member</button>
+    </form>
+    <div>
+        <a href="index.html" class="returntomainpage">Return to front page</a>
+    </div>
+</main>
+<script>
+    // Try to clear form data to prevent inserting to db on page reload.
+
+   /* var btn = document.getElementById("btn-yes");
+    var form = document.getElementById("form-test");
+    console.log(form);
+
+    btn.onclick = delayFormStop;
+
+    function delayFormStop() {
+        setTimeout(stopForm(), 500);
+    }
+
+    function stopForm() {
+        form.reset();
+        console.log("STOP 9 gears!!!!");
+        clearTimeout();
+    }*/
+</script>
+</body>
+</html>

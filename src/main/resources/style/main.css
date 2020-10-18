@@ -24,8 +24,10 @@
 
 .add-worker {
     border: 2px solid black;
-    padding: 10px;
+    padding: 20px;
     margin-top: 50px;
+    width: 200px;
+    text-align: center;
 }
 
 .add-worker:hover {
@@ -78,4 +80,41 @@ nav ul li {
 a {
     text-decoration: none;
     color: white;
+}
+
+button {
+    background-color: #eb5a55;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+form {
+    width: 50%;
+}
+
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+
+input[type=text], input[type=email] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    padding-bottom: 20px;
+}
+
+.nav2 {
+    margin-bottom: 30px;
+}
+
+.returntomainpage {
+    color: #eb5a55;
 }
