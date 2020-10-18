@@ -36,8 +36,8 @@ class HttpServerTest {
     @Test
     void correctBodyContent() throws IOException {
         new HttpServer(23234);
-        HttpClient client = new HttpClient("localhost", 23234, "/echo?body=Lateralus");
-        assertEquals("Lateralus", client.getResponseBody());
+        HttpClient client = new HttpClient("localhost", 23234, "/echo?body=BigBrain");
+        assertEquals("BigBrain", client.getResponseBody());
     }
 
     @Test

@@ -7,8 +7,6 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.core.Response;
-
 import javax.sql.DataSource;
 import java.io.*;
 import java.net.ServerSocket;
@@ -172,7 +170,7 @@ public class HttpServer {
             clientSocket.getOutputStream().write(response.getBytes());
             clientSocket.getOutputStream().write(buffer.toByteArray());
         } catch (NullPointerException err) {
-            System.out.println("NullPointerException caught!");
+           logger.info("NullPointerException caught!");
         }
 
        /* // No resource requested
