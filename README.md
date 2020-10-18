@@ -1,5 +1,7 @@
 # Assignment 3
 
+![Java CI with Maven](https://github.com/kristiania/pgr203innevering3-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+
 ## How to run this program
 ### Build an executable jar-file
 1. Run `mvn clean` first to clean up the target folder.
