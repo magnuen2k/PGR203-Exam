@@ -4,7 +4,6 @@ import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
@@ -12,10 +11,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -103,7 +100,10 @@ public class HttpServer {
         String email = requestParameter.getParameter("email_address");
         String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
 
-        Member member = new Member(firstName, lastName, decodedEmail);
+        Member member = new Member();
+        member.setFirstName(firstName);
+        member.setLastName(lastName);
+        member.setEmail(decodedEmail);
 
         memberDao.insertMember(member);
         String body = "Okay";
@@ -172,66 +172,6 @@ public class HttpServer {
         } catch (NullPointerException err) {
            logger.info("NullPointerException caught!");
         }
-
-       /* // No resource requested
-        boolean resourceRequested = true;
-        boolean resourceExists = false;
-        if (requestPath.equals("/")) {
-            resourceRequested = false;
-        } else {
-            Path p = Paths.get(String.valueOf(contentRoot) + "/" + requestPath);
-            if (Files.exists(p)) {
-                resourceExists = true;
-            }
-            System.out.println("Resource found: " + resourceExists);
-        }
-
-        // If the requested file does not exist the page will return an error with code 404 Not Found
-        if (!resourceRequested || !resourceExists) {
-            body = requestPath + " does not exist";
-            String response = "HTTP/1.1 404 Not Found\r\n" +
-                    "Content-Length: " + body.length() + "\r\n" +
-                    "Connection: close\r\n" +
-                    "\r\n" +
-                    body;
-            clientSocket.getOutputStream().write(response.getBytes());
-            return;
-        }
-        File file = new File(contentRoot, requestPath);
-
-        // If the file is HTML, make sure contentType is "text/html"
-        String contentType = "text/plain";
-        if (file.getName().endsWith(".html")) {
-            contentType = "text/html";
-        }
-
-        // If the file is CSS, make sure contentType is "text/css"
-        if (file.getName().endsWith(".css")) {
-            contentType = "text/css";
-        }
-
-        // Create response
-        String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                "Content-Length: " + file.length() + "\r\n" +
-                "Connection: close\r\n" +
-                "Content-Type: " + contentType + "\r\n" +
-                "\r\n";
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
-
-        new FileInputStream(file).transferTo(clientSocket.getOutputStream());
-
-        // Create response
-        response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
-                "Connection: close\r\n" +
-                "Content-Type: text/plain\r\n" +
-                "\r\n" +
-                body;
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());*/
     }
 
     private void handleEcho(Socket clientSocket, String requestTarget, int questionPos) throws IOException {
@@ -281,7 +221,12 @@ public class HttpServer {
         logger.info("To interact with the server, go to 'localhost:8080/index.html'");
     }
 
+    // Not using contentRoot anymore
     public void setContentRoot(File contentRoot) {
         this.contentRoot = contentRoot;
+    }
+
+    public List<Member> getMemberNames() throws SQLException {
+        return memberDao.list();
     }
 }

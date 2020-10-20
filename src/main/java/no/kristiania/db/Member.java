@@ -6,14 +6,6 @@ public class Member {
     private String email;
     private Long id;
 
-
-    public Member(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
-
     public Member(){
     }
 

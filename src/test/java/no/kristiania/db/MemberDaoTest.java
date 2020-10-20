@@ -34,6 +34,26 @@ class MemberDaoTest {
                 .isEqualTo(member);
     }
 
+    @Test
+    void shouldReturnAllDataFromDatabase() throws SQLException {
+        Member m1 = exampleMember();
+        Member m2 = exampleMember();
+        memberDao.insertMember(m1);
+        memberDao.insertMember(m2);
+
+        assertThat(memberDao.list())
+                .extracting(Member::getName)
+                .contains(m1.getName(), m2.getName());
+    }
+
+    @Test
+    void shouldReturnEmptyResultSet() throws SQLException {
+        long id = -1;
+        assertThat(memberDao.retrieve(id))
+                .usingRecursiveComparison()
+                .isEqualTo(null);
+    }
+
     private Member exampleMember() {
         Member member = new Member();
         member.setFirstName(exampleFirstName());

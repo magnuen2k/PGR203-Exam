@@ -29,5 +29,8 @@ the need for research.
 multiple people working on the same issue/ problem.
 -Communication is key and the communication and planning has been great. This sets the bar for the exam for sure.
  
+## Datamodel
+![UML image](http://www.plantuml.com/plantuml/png/XSvD2i9030NWVK-HfI9UeAjk58Jg7QAJra3ImYHrKtftBOCW_R7RV2-yLvXZz4ubUmYQmPNqJX7w3A2lc2GCSAmucjzGAGVpo4tzYuBhHeeiIy0X1sdJJScVxUTugCdFtwRTFhtD8oLk93RqD6vQvqiORRRD9jjUBOTfeCJ_dfgNCVKc6RA2cj2fl040)
+
 ### Contributors 
 © Stian Westerheim & Magnus Enholm

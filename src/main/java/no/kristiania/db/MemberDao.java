@@ -1,15 +1,9 @@
 package no.kristiania.db;
 
-import org.postgresql.ds.PGSimpleDataSource;
-
 import javax.sql.DataSource;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
 public class MemberDao {
 
@@ -81,43 +75,4 @@ public class MemberDao {
             }
         }
     }
-
-    public static void main(String[] args) throws SQLException, IOException {
-        Properties properties = new Properties();
-        try(FileReader fileReader = new FileReader("pgr203.properties")) {
-            properties.load(fileReader);
-        }
-
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(properties.getProperty("dataSource.url"));
-        dataSource.setUser(properties.getProperty("dataSource.username"));
-        dataSource.setPassword(properties.getProperty("dataSource.password"));
-
-        MemberDao db = new MemberDao(dataSource);
-        Member member = new Member();
-
-        System.out.println("Add new member");
-        System.out.println("First name:");
-
-        // Create scanner to take input from user
-        Scanner scanner = new Scanner(System.in);
-        String firstName = scanner.nextLine();
-
-        System.out.println("Last name:");
-        String lastName = scanner.nextLine();
-
-        System.out.println("Email:");
-        String email = scanner.nextLine();
-
-        member.setFirstName(firstName);
-        member.setLastName(lastName);
-        member.setEmail(email);
-
-        // Add input from user to database
-        db.insertMember(member);
-
-        // Display members from database
-        System.out.println(db.list());
-    }
-
 }
