@@ -10,7 +10,7 @@
     * dataSource.url = jdbc:postgresql://localhost:5432/ + the name of the database.
     * dataSource.username = provide the username of the database owner.
     * dataSource.password = provide the password of the database owner.
-3. Run `java -jar target/arbeidskrav2-1.0-SNAPSHOT.jar`.
+3. Run `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
 4. Go to `localhost:8080` to interact with the server.
 
 ## Work process
