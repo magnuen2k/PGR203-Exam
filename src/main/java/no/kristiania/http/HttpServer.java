@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
+import no.kristiania.db.TaskDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -21,10 +23,18 @@ public class HttpServer {
     private File contentRoot;
     private MemberDao memberDao;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    private Map<String, HttpController> controllers;
 
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
         memberDao = new MemberDao(dataSource);
+        TaskDao taskdao = new TaskDao(dataSource);
+        controllers = Map.of(
+                "/api/tasks", new TaskPostController(taskdao),
+                "/api/projectTasks", new TaskGetController(taskdao),
+                "/api/members", new MemberPostController(memberDao),
+                "/api/projectMembers", new MemberGetController(memberDao)
+        );
 
         ServerSocket serverSocket = new ServerSocket(port);
 
@@ -77,21 +87,28 @@ public class HttpServer {
         // If there is no parameters set requestPath to just requestTarget
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
-        if(requestMethod.equals("POST")) {
-            handleInsert(request, clientSocket);
+        if (requestMethod.equals("POST")) {
+            getController(requestPath).handle(request, clientSocket);
         }
         else {
             if (requestPath.equals("/echo")) {
                 handleEcho(clientSocket, requestTarget, questionPos);
-            } else if (requestPath.equals("/api/projectMembers")){
-                handleProjectMembers(clientSocket);
             } else {
-                handleResource(clientSocket, requestPath);
+                HttpController controller = controllers.get(requestPath);
+                if(controller != null) {
+                    controller.handle(request, clientSocket);
+                } else {
+                    handleResource(clientSocket, requestPath);
+                }
             }
         }
     }
 
-    private void handleInsert(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
+    private HttpController getController(String requestPath) {
+        return controllers.get(requestPath);
+    }
+
+    /*private void handleInsert(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
         QueryString requestParameter = new QueryString(request.getBody());
 
         // Getting data from POST request
@@ -120,11 +137,12 @@ public class HttpServer {
                 "Content-Length: " + body.length() + "\r\n" +
                 "\r\n" +
                 body;
+
         // Write the response back to the client
         clientSocket.getOutputStream().write(response.getBytes());
-    }
+    }*/
 
-    private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
+    /*private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
         String statusCode = "200";
 
         // Create string to build response body
@@ -144,7 +162,7 @@ public class HttpServer {
 
         // Send back response to client
         clientSocket.getOutputStream().write(response.getBytes());
-    }
+    }*/
 
     private void handleResource(Socket clientSocket, String requestPath) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display tasks</title>
+</head>
+<body>
+<div id="projectTasks"></div>
+</body>
+<script>
+    fetch("/api/projectTasks").then(response => response.text()).then(html => {
+        document.getElementById("projectTasks").innerHTML = html;
+    });
+</script>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Task</title>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+
+<body>
+<nav class="nav2">
+    <div class="container">
+        <ul>
+            <div class="testDiv animate__animated animate__fadeInDown "><strong>R</strong><p style="color: white; display: inline">P</p> <strong>H</strong><p style="color: white; display: inline">all of </p><strong>F</strong><p style="color: white; display: inline">ame</p></div>
+            <li><a href="index.html">Home Of RPs</a></li>
+            <li><a href="newMember.html">Add New RP</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container">
+    <h1>Add task</h1>
+    <form method="POST" action="/api/tasks" id="form-test">
+        <div><label>Task name: <input type="text" name="task_name" /></label></div>
+        <div><label>Description: <input type="text" name="task_desc" /></label></div>
+        <button id="btn-yes">Add RP task</button>
+    </form>
+    <div>
+        <a href="index.html" class="returntomainpage">Return to front page</a>
+    </div>
+</main>
+</body>
+</html>
