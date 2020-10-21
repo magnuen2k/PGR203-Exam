@@ -98,14 +98,22 @@ public class HttpServer {
         String firstName = requestParameter.getParameter("first_name");
         String lastName = requestParameter.getParameter("last_name");
         String email = requestParameter.getParameter("email_address");
+
+        // Decode data
+        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8");
+        String decodedLastName = URLDecoder.decode(lastName, "UTF-8");
         String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
 
+        // Create member object
         Member member = new Member();
-        member.setFirstName(firstName);
-        member.setLastName(lastName);
+        member.setFirstName(decodedFirstName);
+        member.setLastName(decodedLastName);
         member.setEmail(decodedEmail);
 
+        // Insert member objet to db
         memberDao.insertMember(member);
+
+        // Create response
         String body = "Okay";
         String response = "HTTP/1.1 200 OK\r\n" +
                 "Connection: close\r\n" +
@@ -119,6 +127,7 @@ public class HttpServer {
     private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
         String statusCode = "200";
 
+        // Create string to build response body
         String body = "<ul>";
         for (Member member : memberDao.list()) {
             body += "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>";
@@ -128,7 +137,7 @@ public class HttpServer {
         // Create response
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                 "Connection: close\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
+                "Content-Length: " + body.getBytes().length + "\r\n" +
                 "Content-Type: text/plain\r\n" +
                 "\r\n" +
                 body;
