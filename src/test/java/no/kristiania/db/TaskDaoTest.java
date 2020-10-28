@@ -35,8 +35,9 @@ public class TaskDaoTest {
     }
 
     @Test
-    void checkIfTaskIsInactive() throws SQLException {
+    void checkIfTaskIsActiveAfterInsert() throws SQLException {
         Task task = exampleTask();
+        task.setTaskStatus(true);
         taskDao.insertTask(task);
         assertThat(task).hasNoNullFieldsOrProperties();
         assertThat(taskDao.list())
