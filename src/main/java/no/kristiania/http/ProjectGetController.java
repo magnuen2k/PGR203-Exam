@@ -6,6 +6,7 @@ import no.kristiania.db.Project;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 public class ProjectGetController implements HttpController {
     private ProjectDao projectDao;
@@ -15,6 +16,11 @@ public class ProjectGetController implements HttpController {
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(clientSocket);
+    }
+
+    public String getBody() throws SQLException {
         String body = "<div class='container'>";
         for (Project project : projectDao.list()) {
             // Check if project is active or not
@@ -39,15 +45,7 @@ public class ProjectGetController implements HttpController {
         }
 
         body += "</div>";
-        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "Content-Type: text/html\r\n" +
-                "Connection: close\r\n" +
-                "\r\n" +
-                body;
 
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
+        return body;
     }
 }

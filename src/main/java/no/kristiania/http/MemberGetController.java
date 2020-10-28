@@ -1,11 +1,9 @@
 package no.kristiania.http;
-
-import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 public class MemberGetController implements HttpController{
     private MemberDao memberDao;
@@ -16,25 +14,16 @@ public class MemberGetController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
-        String statusCode = "200";
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(clientSocket);
+    }
 
-        // Create string to build response body
+    public String getBody() throws SQLException {
         String body = "<ul>";
-        for (Member member : memberDao.list()) {
-            body += "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>";
-        }
+        body += memberDao.list()
+               .stream().map(member -> "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>")
+               .collect(Collectors.joining());
         body += "</ul>";
-
-        // Create response
-        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
-        String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "Content-Type: text/plain\r\n" +
-                "\r\n" +
-                body;
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
+        return body;
     }
 }

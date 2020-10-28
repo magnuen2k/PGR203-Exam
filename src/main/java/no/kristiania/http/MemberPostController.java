@@ -4,6 +4,7 @@ import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.sql.SQLException;
@@ -17,6 +18,12 @@ public class MemberPostController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
+        // Create response
+        HttpMessage response = handle(request);
+        response.write(clientSocket);
+    }
+
+    public HttpMessage handle(HttpMessage request) throws UnsupportedEncodingException, SQLException {
         QueryString requestParameter = new QueryString(request.getBody());
 
         // Getting data from POST request
@@ -38,15 +45,10 @@ public class MemberPostController implements HttpController{
         // Insert member object to db
         memberDao.insertMember(member);
 
-        // Create response
-        String body = "Okay";
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
-                "\r\n" +
-                body;
-
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
+        // Add redirect to response
+        HttpMessage redirect = new HttpMessage();
+        redirect.setStartLine("HTTP/1.1 302 Redirect");
+        redirect.getHeaders().put("Location", "http://localhost:8080/redirect.html");
+        return redirect;
     }
 }
