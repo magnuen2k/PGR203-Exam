@@ -26,6 +26,7 @@ public class MemberGetController implements HttpController{
         body += "</ul>";
 
         // Create response
+        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
         String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                 "Connection: close\r\n" +
                 "Content-Length: " + body.getBytes().length + "\r\n" +

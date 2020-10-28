@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
+import no.kristiania.db.ProjectDao;
 import no.kristiania.db.TaskDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -29,11 +30,15 @@ public class HttpServer {
     public HttpServer(int port, DataSource dataSource) throws IOException {
         memberDao = new MemberDao(dataSource);
         TaskDao taskdao = new TaskDao(dataSource);
+        ProjectDao projectDao = new ProjectDao(dataSource);
         controllers = Map.of(
                 "/api/tasks", new TaskPostController(taskdao),
                 "/api/projectTasks", new TaskGetController(taskdao),
                 "/api/members", new MemberPostController(memberDao),
-                "/api/projectMembers", new MemberGetController(memberDao)
+                "/api/projectMembers", new MemberGetController(memberDao),
+                "/api/projects", new ProjectPostController(projectDao),
+                "/api/projectList", new ProjectGetController(projectDao),
+                "/api/updateProject", new ProjectUpdateController(projectDao)
         );
 
         ServerSocket serverSocket = new ServerSocket(port);
@@ -189,6 +194,7 @@ public class HttpServer {
                 contentType = "text/css";
             }
 
+            //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
             String response = "HTTP/1.1 200 OK\r\n" +
                     "Content-Length: " + buffer.toByteArray().length + "\r\n" +
                     "Connection: close\r\n" +
@@ -233,6 +239,7 @@ public class HttpServer {
             properties.load(fileReader);
         }
 
+        //Required to make it work with an empty database since we .gitignore'd the pgr203.properties-file.
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setUrl(properties.getProperty("dataSource.url"));
         dataSource.setUser(properties.getProperty("dataSource.username"));

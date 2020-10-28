@@ -6,6 +6,7 @@ import java.util.Map;
 public class QueryString {
     private final Map<String, String> parameters = new LinkedHashMap<>();
 
+    //This will split the querystring at the "&" and make the part before "&" key and the part after is value
     public QueryString(String queryString) {
         for (String parameter : queryString.split("&")) {
             int equalsPos = parameter.indexOf('=');

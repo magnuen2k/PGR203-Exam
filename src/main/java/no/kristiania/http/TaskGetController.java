@@ -16,14 +16,25 @@ public class TaskGetController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
-        String body = "<ul>";
+        String body = "<div>";
         for (Task task : taskDao.list()) {
-            body += "<li>" + task.getTaskName() + "</li>";
+            // Check if task is active or not
+            String status = task.getTaskStatus() ? "Active" : "Inactive";
+            String notStatus = !(task.getTaskStatus()) ? "Active" : "Inactive";
+            String statusDropDown = "<select><option value='" + task.getTaskStatus() + " '>" + status + "</option><option value='" + !(task.getTaskStatus()) + "'>" + notStatus + "</option></select>";
+
+            // Build output string
+            // TODO add styling in css file
+            // TODO add project to output
+            // TODO display members assigned to task (dropdownlist?)
+            // TODO option to add member to task
+            body += "<div style='border: 2px solid black; margin-bottom: 20px'><p>" + task.getTaskName() + " - " + statusDropDown + "</p><p>" + task.getDesc() + "</p></div>";
         }
 
-        body += "</ul>";
+        body += "</div>";
+        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
         String response = "HTTP/1.1 200 OK\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
+                "Content-Length: " + body.getBytes().length + "\r\n" +
                 "Content-Type: text/html\r\n" +
                 "Connection: close\r\n" +
                 "\r\n" +

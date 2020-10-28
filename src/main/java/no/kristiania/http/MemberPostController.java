@@ -24,10 +24,10 @@ public class MemberPostController implements HttpController{
         String lastName = requestParameter.getParameter("last_name");
         String email = requestParameter.getParameter("email_address");
 
-        // Decode data
-        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8");
-        String decodedLastName = URLDecoder.decode(lastName, "UTF-8");
-        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
+        // Decode data to UTF-8 format
+        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8"); //Makes us able to use "æøå"
+        String decodedLastName = URLDecoder.decode(lastName, "UTF-8"); //Makes us able to use "æøå"
+        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct and not %40
 
         // Create member object
         Member member = new Member();

@@ -16,8 +16,9 @@ public class TaskDao extends AbstractDao<Task>{
         // Make connection to database
         try (Connection connection = dataSource.getConnection()) {
             // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO tasks (task_name) values (?)", Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO tasks (task_name, task_desc) values (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                 insertStatement.setString(1, task.getTaskName());
+                insertStatement.setString(2, task.getDesc());
                 insertStatement.executeUpdate();
 
                 try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
@@ -40,7 +41,9 @@ public class TaskDao extends AbstractDao<Task>{
     protected Task mapRow(ResultSet rs) throws SQLException {
         Task task = new Task();
         task.setTaskName(rs.getString("task_name"));
+        task.setDesc(rs.getString("task_desc"));
         task.setId(rs.getLong("id"));
+        task.setTaskStatus(rs.getBoolean("task_status"));
         return task;
     }
 }

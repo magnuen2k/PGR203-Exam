@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Display tasks</title>
+    <title>Title</title>
     <link rel="stylesheet" href="./style/main.css">
 </head>
 <body>
-<nav>
+<nav class="nav2">
     <div class="container">
         <ul>
             <div class="testDiv animate__animated animate__fadeInDown "><strong>R</strong><p style="color: white; display: inline">P</p> <strong>H</strong><p style="color: white; display: inline">all of </p><strong>F</strong><p style="color: white; display: inline">ame</p></div>
@@ -16,11 +16,17 @@
         </ul>
     </div>
 </nav>
-<div id="projectTasks"></div>
+
+<main class="container">
+    <h1>Add task</h1>
+    <form method="POST" action="/api/projects" id="form-test">
+        <div><label>Project name: <input type="text" name="project_name" /></label></div>
+        <div><label>Description: <input type="text" name="project_desc" /></label></div>
+        <button id="btn-yes">Add RP project</button>
+    </form>
+    <div>
+        <a href="index.html" class="returntomainpage">Return to front page</a>
+    </div>
+</main>
 </body>
-<script>
-    fetch("/api/projectTasks").then(response => response.text()).then(html => {
-        document.getElementById("projectTasks").innerHTML = html;
-    });
-</script>
 </html>

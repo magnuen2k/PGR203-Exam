@@ -24,7 +24,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void shouldListAllCategories() throws SQLException {
+    void shouldListAllTasks() throws SQLException {
         Task task1 = exampleTask();
         Task task2 = exampleTask();
         taskDao.insertTask(task1);
@@ -34,14 +34,30 @@ public class TaskDaoTest {
                 .contains(task1.getTaskName(), task2.getTaskName());
     }
 
+    @Test
+    void checkIfTaskIsInactive() throws SQLException {
+        Task task = exampleTask();
+        taskDao.insertTask(task);
+        assertThat(task).hasNoNullFieldsOrProperties();
+        assertThat(taskDao.list())
+                .extracting(Task::getTaskStatus)
+                .contains(task.getTaskStatus());
+    }
+
     private Task exampleTask() {
         Task task = new Task();
         task.setTaskName(exampleTaskName());
+        task.setDesc(exampleTaskDesc());
         return task;
     }
 
     private String exampleTaskName() {
         String[] options = {"Make food", "Drink", "Make baby", "Make gears"};
+        return options[random.nextInt(options.length)];
+    }
+
+    private String exampleTaskDesc() {
+        String[] options = {"yes i make food", "nice drinks u got there baby", "yes", "selfexplaining what this is my g"};
         return options[random.nextInt(options.length)];
     }
 }

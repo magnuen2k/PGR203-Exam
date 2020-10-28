@@ -1,9 +1,11 @@
 package no.kristiania.db;
 
 public class Task {
-    private String taskName;
+
     private long id;
+    private String taskName;
     private String desc;
+    public boolean taskStatus;
 
     public String getTaskName() {
         return taskName;
@@ -27,5 +29,13 @@ public class Task {
 
     public String getDesc() {
         return desc;
+    }
+
+    public boolean getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(boolean taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }
