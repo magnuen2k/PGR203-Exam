@@ -10,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URLDecoder;
+import java.net.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -267,5 +265,9 @@ public class HttpServer {
 
     public int getPort() {
         return serverSocket.getLocalPort();
+    }
+
+    public String getHostname() {
+        return InetAddress.getLoopbackAddress().getHostName();
     }
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Date;
@@ -128,6 +129,13 @@ class HttpServerTest {
         memberDao.insertMember(member);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectMembers");
         assertThat(client.getResponseBody()).contains("<li>Name: Arild Svensen - Email: arild@sykkel.no</li>");
+    }
+
+    // Print getHostName and getPort for testing
+    @Test
+    void shouldPrintHostname() {
+        System.out.println("IP: " + server.getHostname());
+        System.out.println("Port: " + server.getPort());
     }
 
 }
