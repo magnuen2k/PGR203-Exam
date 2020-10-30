@@ -248,7 +248,7 @@ public class HttpServer {
 
         Flyway.configure().dataSource(dataSource).load().migrate();
 
-        HttpServer server = new HttpServer(0, dataSource);
+        HttpServer server = new HttpServer(8080, dataSource);
 
         // Make sure only files form resources are available
        /* server.setContentRoot(new File("src/main/resources"));*/
