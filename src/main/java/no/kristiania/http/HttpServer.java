@@ -23,6 +23,7 @@ public class HttpServer {
 
     private File contentRoot;
     private MemberDao memberDao;
+    private ServerSocket serverSocket;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private Map<String, HttpController> controllers;
 
@@ -41,7 +42,7 @@ public class HttpServer {
                 "/api/updateProject", new ProjectUpdateController(projectDao)
         );
 
-        ServerSocket serverSocket = new ServerSocket(port);
+        serverSocket = new ServerSocket(port);
 
         // Creates Runnable to contain the code to be executed in a separate thread
         Runnable runnable = () -> {
@@ -262,5 +263,9 @@ public class HttpServer {
 
     public List<Member> getMemberNames() throws SQLException {
         return memberDao.list();
+    }
+
+    public int getPort() {
+        return serverSocket.getLocalPort();
     }
 }
