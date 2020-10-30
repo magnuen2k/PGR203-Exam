@@ -248,12 +248,12 @@ public class HttpServer {
 
         Flyway.configure().dataSource(dataSource).load().migrate();
 
-        HttpServer server = new HttpServer(8080, dataSource);
+        HttpServer server = new HttpServer(0, dataSource);
 
         // Make sure only files form resources are available
        /* server.setContentRoot(new File("src/main/resources"));*/
 
-        logger.info("To interact with the server, go to 'localhost:8080/index.html'");
+        logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
     }
 
     // Not using contentRoot anymore
