@@ -130,12 +130,4 @@ class HttpServerTest {
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectMembers");
         assertThat(client.getResponseBody()).contains("<li>Name: Arild Svensen - Email: arild@sykkel.no</li>");
     }
-
-    // Print getHostName and getPort for testing
-    @Test
-    void shouldPrintHostname() {
-        System.out.println("IP: " + server.getHostname());
-        System.out.println("Port: " + server.getPort());
-    }
-
 }

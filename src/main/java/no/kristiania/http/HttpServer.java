@@ -20,10 +20,10 @@ import java.util.Properties;
 public class HttpServer {
 
     private File contentRoot;
-    private MemberDao memberDao;
-    private ServerSocket serverSocket;
+    private final MemberDao memberDao;
+    private final ServerSocket serverSocket;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
-    private Map<String, HttpController> controllers;
+    private final Map<String, HttpController> controllers;
 
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
@@ -265,9 +265,5 @@ public class HttpServer {
 
     public int getPort() {
         return serverSocket.getLocalPort();
-    }
-
-    public String getHostname() {
-        return InetAddress.getLoopbackAddress().getHostName();
     }
 }
