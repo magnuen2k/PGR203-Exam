@@ -16,7 +16,12 @@ public class TaskGetController implements HttpController{
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
-        String body = "<div>";
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(clientSocket);
+    }
+
+    public String getBody() throws SQLException {
+        String body = "<div class='container'>";
         for (Task task : taskDao.list()) {
             // Check if task is active or not
             String status = task.getTaskStatus() ? "Active" : "Inactive";
@@ -32,15 +37,6 @@ public class TaskGetController implements HttpController{
         }
 
         body += "</div>";
-        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "Content-Type: text/html\r\n" +
-                "Connection: close\r\n" +
-                "\r\n" +
-                body;
-
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
+        return body;
     }
 }

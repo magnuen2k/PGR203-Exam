@@ -48,7 +48,7 @@ public class TaskDao extends AbstractDao<Task>{
     }
 
     public List<Task> list() throws SQLException {
-        return list("SELECT * FROM tasks");
+        return list("SELECT * FROM tasks ORDER BY id ASC");
     }
 
     @Override
