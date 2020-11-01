@@ -1,9 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.db.Member;
-import no.kristiania.db.MemberDao;
-import no.kristiania.db.ProjectDao;
-import no.kristiania.db.TaskDao;
+import no.kristiania.db.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -28,18 +25,22 @@ public class HttpServer {
         memberDao = new MemberDao(dataSource);
         TaskDao taskDao = new TaskDao(dataSource);
         ProjectDao projectDao = new ProjectDao(dataSource);
-        controllers = Map.of(
-                "/api/tasks", new TaskPostController(taskDao),
-                "/api/projectTasks", new TaskGetController(taskDao),
-                "/api/members", new MemberPostController(memberDao),
-                "/api/projectMembers", new MemberGetController(memberDao),
-                "/api/projects", new ProjectPostController(projectDao),
-                "/api/projectList", new ProjectGetController(projectDao),
-                "/api/updateProject", new ProjectUpdateController(projectDao),
-                "/api/taskOptions", new TaskOptionsController(taskDao),
-                "/api/projectOptions", new ProjectOptionsController(projectDao),
-                "/api/updateTask", new TaskUpdateController(taskDao),
-                "/api/memberOptions", new MemberOptionsController(memberDao)
+        MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
+
+        // Using Map.ofEntries to be able to use over 10 routes
+        controllers = Map.ofEntries(
+                Map.entry("/api/tasks", new TaskPostController(taskDao)),
+                Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
+                Map.entry("/api/members", new MemberPostController(memberDao)),
+                Map.entry("/api/projectMembers", new MemberGetController(memberDao)),
+                Map.entry("/api/projects", new ProjectPostController(projectDao)),
+                Map.entry("/api/projectList", new ProjectGetController(projectDao)),
+                Map.entry("/api/updateProject", new ProjectUpdateController(projectDao)),
+                Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
+                Map.entry("/api/projectOptions", new ProjectOptionsController(projectDao)),
+                Map.entry("/api/updateTask", new TaskUpdateController(taskDao)),
+                Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
+                Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
         );
 
         serverSocket = new ServerSocket(port);
