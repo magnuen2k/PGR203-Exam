@@ -10,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URLDecoder;
+import java.net.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +20,10 @@ import java.util.Properties;
 public class HttpServer {
 
     private File contentRoot;
-    private MemberDao memberDao;
+    private final MemberDao memberDao;
+    private final ServerSocket serverSocket;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
-    private Map<String, HttpController> controllers;
+    private final Map<String, HttpController> controllers;
 
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
@@ -41,7 +40,7 @@ public class HttpServer {
                 "/api/updateProject", new ProjectUpdateController(projectDao)
         );
 
-        ServerSocket serverSocket = new ServerSocket(port);
+        serverSocket = new ServerSocket(port);
 
         // Creates Runnable to contain the code to be executed in a separate thread
         Runnable runnable = () -> {
@@ -252,7 +251,7 @@ public class HttpServer {
         // Make sure only files form resources are available
        /* server.setContentRoot(new File("src/main/resources"));*/
 
-        logger.info("To interact with the server, go to 'localhost:8080/index.html'");
+        logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
     }
 
     // Not using contentRoot anymore
@@ -262,5 +261,9 @@ public class HttpServer {
 
     public List<Member> getMemberNames() throws SQLException {
         return memberDao.list();
+    }
+
+    public int getPort() {
+        return serverSocket.getLocalPort();
     }
 }
