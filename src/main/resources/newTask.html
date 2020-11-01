@@ -23,6 +23,12 @@
     <form method="POST" action="/api/tasks" id="form-test">
         <div><label>Task name: <input type="text" name="task_name" /></label></div>
         <div><label>Description: <input type="text" name="task_desc" /></label></div>
+        <div><label>
+            <select name="task_status">Status:
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select>
+        </label></div>
         <button id="btn-yes">Add RP task</button>
     </form>
     <div>

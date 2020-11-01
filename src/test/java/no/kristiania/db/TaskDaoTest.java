@@ -39,7 +39,6 @@ public class TaskDaoTest {
         Task task = exampleTask();
         task.setTaskStatus(true);
         taskDao.insertTask(task);
-        assertThat(task).hasNoNullFieldsOrProperties();
         assertThat(taskDao.list())
                 .extracting(Task::getTaskStatus)
                 .contains(task.getTaskStatus());

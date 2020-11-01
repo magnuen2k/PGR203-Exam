@@ -1,9 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.db.Member;
-import no.kristiania.db.MemberDao;
-import no.kristiania.db.ProjectDao;
-import no.kristiania.db.TaskDao;
+import no.kristiania.db.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -16,10 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
 public class HttpServer {
 
-    private File contentRoot;
     private final MemberDao memberDao;
     private final ServerSocket serverSocket;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
@@ -28,16 +23,24 @@ public class HttpServer {
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
         memberDao = new MemberDao(dataSource);
-        TaskDao taskdao = new TaskDao(dataSource);
+        TaskDao taskDao = new TaskDao(dataSource);
         ProjectDao projectDao = new ProjectDao(dataSource);
-        controllers = Map.of(
-                "/api/tasks", new TaskPostController(taskdao),
-                "/api/projectTasks", new TaskGetController(taskdao),
-                "/api/members", new MemberPostController(memberDao),
-                "/api/projectMembers", new MemberGetController(memberDao),
-                "/api/projects", new ProjectPostController(projectDao),
-                "/api/projectList", new ProjectGetController(projectDao),
-                "/api/updateProject", new ProjectUpdateController(projectDao)
+        MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
+
+        // Using Map.ofEntries to be able to use over 10 routes
+        controllers = Map.ofEntries(
+                Map.entry("/api/tasks", new TaskPostController(taskDao)),
+                Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
+                Map.entry("/api/members", new MemberPostController(memberDao)),
+                Map.entry("/api/projectMembers", new MemberGetController(memberDao)),
+                Map.entry("/api/projects", new ProjectPostController(projectDao)),
+                Map.entry("/api/projectList", new ProjectGetController(projectDao)),
+                Map.entry("/api/updateProject", new ProjectUpdateController(projectDao)),
+                Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
+                Map.entry("/api/projectOptions", new ProjectOptionsController(projectDao)),
+                Map.entry("/api/updateTask", new TaskUpdateController(taskDao)),
+                Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
+                Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
         );
 
         serverSocket = new ServerSocket(port);
@@ -111,62 +114,6 @@ public class HttpServer {
     private HttpController getController(String requestPath) {
         return controllers.get(requestPath);
     }
-
-    /*private void handleInsert(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
-        QueryString requestParameter = new QueryString(request.getBody());
-
-        // Getting data from POST request
-        String firstName = requestParameter.getParameter("first_name");
-        String lastName = requestParameter.getParameter("last_name");
-        String email = requestParameter.getParameter("email_address");
-
-        // Decode data
-        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8");
-        String decodedLastName = URLDecoder.decode(lastName, "UTF-8");
-        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
-
-        // Create member object
-        Member member = new Member();
-        member.setFirstName(decodedFirstName);
-        member.setLastName(decodedLastName);
-        member.setEmail(decodedEmail);
-
-        // Insert member objet to db
-        memberDao.insertMember(member);
-
-        // Create response
-        String body = "Okay";
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
-                "\r\n" +
-                body;
-
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
-    }*/
-
-    /*private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
-        String statusCode = "200";
-
-        // Create string to build response body
-        String body = "<ul>";
-        for (Member member : memberDao.list()) {
-            body += "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>";
-        }
-        body += "</ul>";
-
-        // Create response
-        String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "Content-Type: text/plain\r\n" +
-                "\r\n" +
-                body;
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
-    }*/
 
     private void handleResource(Socket clientSocket, String requestPath) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
@@ -248,16 +195,12 @@ public class HttpServer {
 
         HttpServer server = new HttpServer(8080, dataSource);
 
-        // Make sure only files form resources are available
-       /* server.setContentRoot(new File("src/main/resources"));*/
-
+      
         logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
     }
 
-    // Not using contentRoot anymore
-    public void setContentRoot(File contentRoot) {
-        this.contentRoot = contentRoot;
-    }
+    
+   
 
     public List<Member> getMemberNames() throws SQLException {
         return memberDao.list();

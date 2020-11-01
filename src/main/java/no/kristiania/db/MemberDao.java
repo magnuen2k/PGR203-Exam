@@ -39,7 +39,7 @@ public class MemberDao extends AbstractDao<Member> {
     // List all members in Database
     // Passing in sql statement - SELECT * - loop through result of select and return a List with all members
     public List<Member> list() throws SQLException {
-       return list("SELECT * FROM members");
+       return list("SELECT * FROM members ORDER BY id ASC");
     }
 
     @Override

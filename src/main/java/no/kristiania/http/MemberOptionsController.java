@@ -1,14 +1,16 @@
 package no.kristiania.http;
+
 import no.kristiania.db.MemberDao;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-public class MemberGetController implements HttpController{
+public class MemberOptionsController implements HttpController{
     private MemberDao memberDao;
 
-    public MemberGetController(MemberDao memberDao) {
+    public MemberOptionsController(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
 
@@ -18,12 +20,9 @@ public class MemberGetController implements HttpController{
         response.write(clientSocket);
     }
 
-    public String getBody() throws SQLException {
-        String body = "<ul>";
-        body += memberDao.list()
-               .stream().map(m -> "<li>Name: " + m.getName() + " - Email: " + m.getEmail() + "</li>")
-               .collect(Collectors.joining());
-        body += "</ul>";
-        return body;
+    private String getBody() throws SQLException {
+        return memberDao.list()
+                .stream().map(m -> "<option value=" + m.getId() + ">" + m.getName() + "</option>")
+                .collect(Collectors.joining());
     }
 }
