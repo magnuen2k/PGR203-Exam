@@ -18,7 +18,6 @@ import java.util.Properties;
 
 public class HttpServer {
 
-    private File contentRoot;
     private final MemberDao memberDao;
     private final ServerSocket serverSocket;
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
@@ -191,15 +190,7 @@ public class HttpServer {
 
         HttpServer server = new HttpServer(8080, dataSource);
 
-        // Make sure only files form resources are available
-       /* server.setContentRoot(new File("src/main/resources"));*/
-
         logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
-    }
-
-    // Not using contentRoot anymore
-    public void setContentRoot(File contentRoot) {
-        this.contentRoot = contentRoot;
     }
 
     public List<Member> getMemberNames() throws SQLException {

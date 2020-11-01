@@ -77,8 +77,7 @@ class HttpServerTest {
     @Test
     void affirmContentTypeHTML() throws IOException {
         //HttpServer server = new HttpServer(30006);
-        File contentRoot = new File("target/");
-        server.setContentRoot(contentRoot);
+        File contentRoot = new File("target/test-classes");
 
         Files.writeString(new File(contentRoot, "index.html").toPath(), "<h2>Hello World</h2>");
 
@@ -101,8 +100,7 @@ class HttpServerTest {
     @Test
     void affirmFileNotFound404() throws IOException {
         //HttpServer server = new HttpServer(2227);
-        File contentRoot = new File("target/");
-        server.setContentRoot(contentRoot);
+        File contentRoot = new File("target/test-classes");
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "Hei");
         assertEquals(404, client.getStatusCode());
