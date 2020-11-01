@@ -6,6 +6,7 @@ import no.kristiania.db.Project;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class ProjectPostController implements HttpController {
@@ -22,13 +23,11 @@ public class ProjectPostController implements HttpController {
         // Get data from POST
         String projectName = requestParameter.getParameter("project_name");
         String projectDesc = requestParameter.getParameter("project_desc");
-
-        // Setting default status TRUE
-        Boolean projectStatus = true;
+        boolean projectStatus = Boolean.parseBoolean(requestParameter.getParameter("project_status"));
 
         // Decode data
-        String decodedProjectName = URLDecoder.decode(projectName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedProjectDesc = URLDecoder.decode(projectDesc, "UTF-8"); //Makes us able to use "æøå"
+        String decodedProjectName = URLDecoder.decode(projectName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedProjectDesc = URLDecoder.decode(projectDesc, StandardCharsets.UTF_8); //Makes us able to use "æøå"
 
         // Insert data to project object
         Project project = new Project();

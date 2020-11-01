@@ -14,9 +14,10 @@ public class ProjectDao extends AbstractDao<Project>{
         // Make connection to database
         try (Connection connection = dataSource.getConnection()) {
             // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO projects (project_name, project_desc) values (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO projects (project_name, project_desc, project_status) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                 insertStatement.setString(1, project.getProjectName());
                 insertStatement.setString(2, project.getDesc());
+                insertStatement.setBoolean(3, project.getProjectStatus());
                 insertStatement.executeUpdate();
 
                 try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
