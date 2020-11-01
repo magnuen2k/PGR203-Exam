@@ -38,7 +38,8 @@ public class HttpServer {
                 "/api/updateProject", new ProjectUpdateController(projectDao),
                 "/api/taskOptions", new TaskOptionsController(taskDao),
                 "/api/projectOptions", new ProjectOptionsController(projectDao),
-                "/api/updateTask", new TaskUpdateController(taskDao)
+                "/api/updateTask", new TaskUpdateController(taskDao),
+                "/api/memberOptions", new MemberOptionsController(memberDao)
         );
 
         serverSocket = new ServerSocket(port);
