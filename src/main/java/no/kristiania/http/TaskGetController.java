@@ -33,7 +33,10 @@ public class TaskGetController implements HttpController{
             // TODO add project to output
             // TODO display members assigned to task (dropdownlist?)
             // TODO option to add member to task
-            body += "<div style='border: 2px solid black; margin-bottom: 20px'><p>" + task.getTaskName() + " - " + statusDropDown + "</p><p>" + task.getDesc() + "</p></div>";
+            body += "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                    "<p>" + task.getTaskName() + " - " + statusDropDown + "</p>" +
+                    "<p>" + task.getDesc() + "</p>" +
+                    "</div>";
         }
 
         body += "</div>";

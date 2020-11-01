@@ -2,6 +2,8 @@ package no.kristiania.http;
 
 import no.kristiania.db.Member;
 import no.kristiania.db.MemberDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -10,6 +12,7 @@ import java.net.URLDecoder;
 import java.sql.SQLException;
 
 public class MemberPostController implements HttpController{
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private MemberDao memberDao;
 
     public MemberPostController(MemberDao memberDao) {
@@ -44,6 +47,7 @@ public class MemberPostController implements HttpController{
 
         // Insert member object to db
         memberDao.insertMember(member);
+        logger.info("Adding " + member.getName() + " to the database");
 
         // Add redirect to response
         HttpMessage redirect = new HttpMessage();
