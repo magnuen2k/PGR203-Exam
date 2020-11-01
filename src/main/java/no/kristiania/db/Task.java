@@ -6,6 +6,7 @@ public class Task {
     private String taskName;
     private String desc;
     public boolean taskStatus;
+    private Long projectId;
 
     public String getTaskName() {
         return taskName;
@@ -37,5 +38,13 @@ public class Task {
 
     public void setTaskStatus(boolean taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }

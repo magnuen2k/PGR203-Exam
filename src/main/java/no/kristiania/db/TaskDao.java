@@ -29,6 +29,19 @@ public class TaskDao extends AbstractDao<Task>{
         }
     }
 
+    public void update(Task task) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            // Create statement and execute it
+            try (PreparedStatement insertStatement = connection.prepareStatement(
+                    "UPDATE tasks SET project_id = (?) WHERE id = (?)"
+            )) {
+                insertStatement.setLong(1, task.getProjectId());
+                insertStatement.setLong(2, task.getId());
+                insertStatement.executeUpdate();
+            }
+        }
+    }
+
     public Task retrieve(Long id) throws SQLException {
         return retrieve(id, "SELECT * FROM tasks WHERE id = ?");
     }

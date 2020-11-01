@@ -24,13 +24,15 @@ public class TaskUpdateController implements HttpController{
         QueryString responseParameter = new QueryString(request.getBody());
 
         Long taskId = Long.valueOf(responseParameter.getParameter("taskId"));
-        Integer projectId = Integer.valueOf(responseParameter.getParameter("projectId"));
+        Long projectId = Long.valueOf(responseParameter.getParameter("projectId"));
         Task task = taskDao.retrieve(taskId);
-        taskDao.update(task); //Johannes has the update on line 37 in ProductDao
+        task.setProjectId(projectId);
+
+        taskDao.update(task);
 
         HttpMessage redirect = new HttpMessage();
         redirect.setStartLine("HTTP/1.1 302 Redirect");
-        redirect.getHeaders().put("Location", "http://localhost:8080/idenx.html");
+        redirect.getHeaders().put("Location", "http://localhost:8080/redirect.html");
         return redirect;
     }
 }
