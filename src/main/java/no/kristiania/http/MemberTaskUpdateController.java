@@ -3,6 +3,7 @@ package no.kristiania.http;
 import no.kristiania.db.MemberTasks;
 import no.kristiania.db.MemberTasksDao;
 import no.kristiania.db.Task;
+import org.postgresql.util.PSQLException;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -30,11 +31,16 @@ public class MemberTaskUpdateController implements HttpController{
         memberTasks.setMemberId(memberId);
         memberTasks.setTaskId(taskId);
 
-        memberTasksDao.insert(memberTasks);
+        HttpMessage response = new HttpMessage();
 
-        HttpMessage redirect = new HttpMessage();
-        redirect.setStartLine("HTTP/1.1 302 Redirect");
-        redirect.getHeaders().put("Location", "http://localhost:8080/redirect.html");
-        return redirect;
+        // Check if member is already assigned to task
+        try {
+            memberTasksDao.insert(memberTasks);
+            response.setStartLine("HTTP/1.1 302 Redirect");
+            response.getHeaders().put("Location", "http://localhost:8080/redirect.html");
+        } catch (PSQLException error) {
+            response = new HttpMessage("Member is already assigned to this task!");
+        }
+        return response;
     }
 }
