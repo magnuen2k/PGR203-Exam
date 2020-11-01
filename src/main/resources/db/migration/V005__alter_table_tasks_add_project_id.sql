@@ -1,0 +1,1 @@
+alter table tasks add column project_id integer null references projects(id)
