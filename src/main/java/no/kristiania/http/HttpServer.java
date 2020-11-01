@@ -26,19 +26,19 @@ public class HttpServer {
     // Constructor
     public HttpServer(int port, DataSource dataSource) throws IOException {
         memberDao = new MemberDao(dataSource);
-        TaskDao taskdao = new TaskDao(dataSource);
+        TaskDao taskDao = new TaskDao(dataSource);
         ProjectDao projectDao = new ProjectDao(dataSource);
         controllers = Map.of(
-                "/api/tasks", new TaskPostController(taskdao),
-                "/api/projectTasks", new TaskGetController(taskdao),
+                "/api/tasks", new TaskPostController(taskDao),
+                "/api/projectTasks", new TaskGetController(taskDao),
                 "/api/members", new MemberPostController(memberDao),
                 "/api/projectMembers", new MemberGetController(memberDao),
                 "/api/projects", new ProjectPostController(projectDao),
                 "/api/projectList", new ProjectGetController(projectDao),
                 "/api/updateProject", new ProjectUpdateController(projectDao),
-                "/api/taskOptions", new TaskOptionsController(taskdao),
+                "/api/taskOptions", new TaskOptionsController(taskDao),
                 "/api/projectOptions", new ProjectOptionsController(projectDao),
-                "/api/updateTask", new TaskUpdateController(taskdao)
+                "/api/updateTask", new TaskUpdateController(taskDao)
         );
 
         serverSocket = new ServerSocket(port);
