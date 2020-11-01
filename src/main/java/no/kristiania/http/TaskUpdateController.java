@@ -29,7 +29,7 @@ public class TaskUpdateController implements HttpController{
         taskDao.update(task); //Johannes has the update on line 37 in ProductDao
 
         HttpMessage redirect = new HttpMessage();
-        redirect.getStartLine("HTTP/1.1 302 Redirect";
+        redirect.setStartLine("HTTP/1.1 302 Redirect");
         redirect.getHeaders().put("Location", "http://localhost:8080/idenx.html");
         return redirect;
     }
