@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
 public class HttpServer {
 
     private File contentRoot;
@@ -111,62 +110,6 @@ public class HttpServer {
     private HttpController getController(String requestPath) {
         return controllers.get(requestPath);
     }
-
-    /*private void handleInsert(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
-        QueryString requestParameter = new QueryString(request.getBody());
-
-        // Getting data from POST request
-        String firstName = requestParameter.getParameter("first_name");
-        String lastName = requestParameter.getParameter("last_name");
-        String email = requestParameter.getParameter("email_address");
-
-        // Decode data
-        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8");
-        String decodedLastName = URLDecoder.decode(lastName, "UTF-8");
-        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct
-
-        // Create member object
-        Member member = new Member();
-        member.setFirstName(decodedFirstName);
-        member.setLastName(decodedLastName);
-        member.setEmail(decodedEmail);
-
-        // Insert member objet to db
-        memberDao.insertMember(member);
-
-        // Create response
-        String body = "Okay";
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.length() + "\r\n" +
-                "\r\n" +
-                body;
-
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
-    }*/
-
-    /*private void handleProjectMembers(Socket clientSocket) throws SQLException, IOException {
-        String statusCode = "200";
-
-        // Create string to build response body
-        String body = "<ul>";
-        for (Member member : memberDao.list()) {
-            body += "<li>Name: " + member.getName() + " - Email: " + member.getEmail() + "</li>";
-        }
-        body += "</ul>";
-
-        // Create response
-        String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "Content-Type: text/plain\r\n" +
-                "\r\n" +
-                body;
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
-    }*/
 
     private void handleResource(Socket clientSocket, String requestPath) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
