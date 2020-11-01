@@ -16,9 +16,10 @@ public class TaskDao extends AbstractDao<Task>{
         // Make connection to database
         try (Connection connection = dataSource.getConnection()) {
             // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO tasks (task_name, task_desc) values (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO tasks (task_name, task_desc, task_status) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                 insertStatement.setString(1, task.getTaskName());
                 insertStatement.setString(2, task.getDesc());
+                insertStatement.setBoolean(3, task.getTaskStatus());
                 insertStatement.executeUpdate();
 
                 try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {

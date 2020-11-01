@@ -6,6 +6,7 @@ import no.kristiania.db.TaskDao;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class TaskPostController implements HttpController {
@@ -22,11 +23,11 @@ public class TaskPostController implements HttpController {
         // Get data from POST
         String taskName = requestParameter.getParameter("task_name");
         String taskDesc = requestParameter.getParameter("task_desc");
-        Boolean taskStatus = true;
+        boolean taskStatus = Boolean.parseBoolean(requestParameter.getParameter("task_status"));
 
         // Decode data
-        String decodedTaskName = URLDecoder.decode(taskName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedTaskDesc = URLDecoder.decode(taskDesc, "UTF-8"); //Makes us able to use "æøå"
+        String decodedTaskName = URLDecoder.decode(taskName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedTaskDesc = URLDecoder.decode(taskDesc, StandardCharsets.UTF_8); //Makes us able to use "æøå"
 
         // Insert data to task object
         Task task = new Task();
