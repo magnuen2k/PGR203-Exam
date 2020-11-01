@@ -195,8 +195,12 @@ public class HttpServer {
 
         HttpServer server = new HttpServer(8080, dataSource);
 
+      
         logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
     }
+
+    
+   
 
     public List<Member> getMemberNames() throws SQLException {
         return memberDao.list();
