@@ -119,12 +119,9 @@ public class HttpServer {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
             if(inputStream == null) {
                 String body = requestPath + " does not exist";
-                String response = "HTTP/1.1 404 Not Found\r\n" +
-                        "Content-Length: " + body.length() + "\r\n" +
-                        "Connection: close\r\n" +
-                        "\r\n" +
-                        body;
-                clientSocket.getOutputStream().write(response.getBytes());
+                HttpMessage response = new HttpMessage(body);
+                response.setStartLine("HTTP/1.1 404 Not Found");
+                response.write(clientSocket);
             }
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             inputStream.transferTo(buffer);
@@ -168,15 +165,9 @@ public class HttpServer {
             returnBody = "Nothing to echo";
         }
         // Create response
-        String response = "HTTP/1.1 " + returnCode + " OK\r\n" +
-                "Content-Length: " + returnBody.length() + "\r\n" +
-                "Connection: close\r\n" +
-                "Content-Type: text/plain\r\n" +
-                "\r\n" +
-                returnBody;
-
-        // Send back response to client
-        clientSocket.getOutputStream().write(response.getBytes());
+        HttpMessage response = new HttpMessage(returnBody);
+        response.setStartLine("HTTP/1.1 " + returnCode + " OK");
+        response.write(clientSocket);
     }
 
     public static void main(String[] args) throws IOException {
