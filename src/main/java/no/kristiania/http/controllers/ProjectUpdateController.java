@@ -19,6 +19,11 @@ public class ProjectUpdateController implements HttpController {
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
+        HttpMessage response = handle(request);
+        response.write(clientSocket);
+    }
+
+    public HttpMessage handle(HttpMessage request) throws SQLException {
         QueryString requestParameter = new QueryString(request.getBody());
 
         // Get data from POST
@@ -38,15 +43,9 @@ public class ProjectUpdateController implements HttpController {
         projectDao.update(project, projectId);
 
         // Create response
-        //Here we added buffer.toByteArray().length to make sure we got the right .length for UTF-8
-        String body = "Project updated!";
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + body.getBytes().length + "\r\n" +
-                "\r\n" +
-                body;
-
-        // Write the response back to the client
-        clientSocket.getOutputStream().write(response.getBytes());
+        HttpMessage redirect = new HttpMessage();
+        redirect.setStartLine("HTTP/1.1 302 Redirect");
+        redirect.getHeaders().put("Location", "http://localhost:8080/redirect.html");
+        return redirect;
     }
 }

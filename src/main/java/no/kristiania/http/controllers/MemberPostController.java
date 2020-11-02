@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class MemberPostController implements HttpController {
@@ -38,9 +39,9 @@ public class MemberPostController implements HttpController {
         String email = requestParameter.getParameter("email_address");
 
         // Decode data to UTF-8 format
-        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedLastName = URLDecoder.decode(lastName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct and not %40
+        String decodedFirstName = URLDecoder.decode(firstName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedLastName = URLDecoder.decode(lastName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8); // Decoding email address to make sure '@' is correct and not %40
 
         // Create member object
         Member member = new Member();
