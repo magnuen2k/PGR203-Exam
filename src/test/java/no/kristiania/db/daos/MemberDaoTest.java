@@ -1,4 +1,4 @@
-package no.kristiania.db;
+package no.kristiania.db.daos;
 
 import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.objects.Member;
@@ -29,7 +29,7 @@ class MemberDaoTest {
         memberDao.insertMember(exampleMember());
         memberDao.insertMember(exampleMember());
         Member member = exampleMember();
-        memberDao.insertMember(member);
+        member.setId(memberDao.insertMember(member));
         assertThat(member).hasNoNullFieldsOrProperties();
         assertThat(memberDao.retrieve(member.getId()))
                 .usingRecursiveComparison()

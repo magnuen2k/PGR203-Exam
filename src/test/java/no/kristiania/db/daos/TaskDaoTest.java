@@ -1,4 +1,4 @@
-package no.kristiania.db;
+package no.kristiania.db.daos;
 
 import no.kristiania.db.daos.TaskDao;
 import no.kristiania.db.objects.Task;

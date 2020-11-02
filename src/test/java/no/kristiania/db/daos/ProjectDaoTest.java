@@ -1,4 +1,4 @@
-package no.kristiania.db;
+package no.kristiania.db.daos;
 
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.db.objects.Project;
