@@ -14,13 +14,20 @@
 4. Go to `localhost:8080` to interact with the server.
 
 ## Work process
-We have been working exclusively over GitHub and Discord while sharing screens.
-Making GitHub issues has been key to our working method and has kept us focused on the task.
-Committing has been done sporadically and not 100% ping pong style. The reason behind this is that
-our work flow has been a lot petter this way, when swapping between screens on discord while doing
-the ping pong programming was a bit of a hassle, and it reduced the time spent on solving problems/ being stuck
-by a lot. The time spent on research also dropped, when the combined knowledge was greater and therefore reduced
-the need for research.
+We have been working exclusively over GitHub and Discord while sharing screens and observing each other.
+We have also been doing some ping pong programming and quite a bit of test driven development for some of
+the more challenging parts that was outside of the syllabus.
+Making GitHub issues has been a major key to our working method and process, and has kept us focused on the task.
+Commit logs does not necessarily indicate the process and all the member has been involved in most of the code.
+The reason behind this is that it has been helping out our work flow and utilizing the time most efficient,
+when swapping between screens on discord while doing the ping pong programming was somewhat less pleasing,
+when there has been stability issues on both the discord servers and our individual ISP's.
+The way we have been working has reduced the time spent on solving the different issues and gathering information
+to a minimum, and it has given us way more freedom and time to develop the functionality and code.
+We have had a lot of conversations during the project and have been able to learn from each other.
+In many situations it has been great to have more than two eyes looking at the code, and analyzing the functionality,
+to make the best of it and to make the code more readable and understandable for a third party such as the person
+grading the exam. 
 
 ## Things learned while working like this
 -The usage of GitHub issues has made it way more easy to stay on point and not get too distracted.
