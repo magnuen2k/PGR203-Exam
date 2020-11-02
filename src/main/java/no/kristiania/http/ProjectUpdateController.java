@@ -21,6 +21,7 @@ public class ProjectUpdateController implements HttpController {
         // Get data from POST
         String projectName = requestParameter.getParameter("project_name");
         int projectId = Integer.parseInt(requestParameter.getParameter("id"));
+        boolean projectStatus = Boolean.parseBoolean(requestParameter.getParameter("project_status"));
 
         // Decode data
         String decodedProjectName = URLDecoder.decode(projectName, "UTF-8"); //Makes us able to use "æøå"
@@ -28,6 +29,7 @@ public class ProjectUpdateController implements HttpController {
         // Insert data to project object
         Project project = new Project();
         project.setProjectName(decodedProjectName);
+        project.setProjectStatus(projectStatus);
 
         // Insert project object to db
         projectDao.update(project, projectId);

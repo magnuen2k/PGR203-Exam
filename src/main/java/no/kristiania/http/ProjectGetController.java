@@ -26,7 +26,7 @@ public class ProjectGetController implements HttpController {
             // Check if project is active or not
             String status = project.getProjectStatus() ? "Active" : "Inactive";
             String notStatus = !(project.getProjectStatus()) ? "Active" : "Inactive";
-            String statusDropDown = "<select><option value='" + project.getProjectStatus() + " '>" + status + "</option><option value='" + !(project.getProjectStatus()) + "'>" + notStatus + "</option></select>";
+            String statusDropDown = "<select name='project_status'><option value='" + project.getProjectStatus() + " '>" + status + "</option><option value='" + !(project.getProjectStatus()) + "'>" + notStatus + "</option></select>";
 
             // Build output string
             // TODO add styling in css file
