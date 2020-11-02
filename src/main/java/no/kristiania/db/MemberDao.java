@@ -2,7 +2,6 @@ package no.kristiania.db;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDao extends AbstractDao<Member> {
@@ -13,22 +12,15 @@ public class MemberDao extends AbstractDao<Member> {
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
-    public void insertMember(Member member) throws SQLException {
-        // Make connection to database
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO members (first_name, last_name, email) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                insertStatement.setString(1, member.getFirstName());
-                insertStatement.setString(2, member.getLastName());
-                insertStatement.setString(3, member.getEmail());
-                insertStatement.executeUpdate();
+    public long insertMember(Member member) throws SQLException {
+        return insert(member, "INSERT INTO members (first_name, last_name, email) values (?, ?, ?)");
+    }
 
-                try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    member.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    @Override
+    protected void insertObject(Member member, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setString(1, member.getFirstName());
+        insertStatement.setString(2, member.getLastName());
+        insertStatement.setString(3, member.getEmail());
     }
 
     public Member retrieve(Long id) throws SQLException {

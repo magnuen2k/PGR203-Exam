@@ -2,7 +2,6 @@ package no.kristiania.db;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDao extends AbstractDao<Task>{
@@ -12,22 +11,8 @@ public class TaskDao extends AbstractDao<Task>{
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
-    public void insertTask(Task task) throws SQLException {
-        // Make connection to database
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO tasks (task_name, task_desc, task_status) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                insertStatement.setString(1, task.getTaskName());
-                insertStatement.setString(2, task.getDesc());
-                insertStatement.setBoolean(3, task.getTaskStatus());
-                insertStatement.executeUpdate();
-
-                try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    task.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    public long insertTask(Task task) throws SQLException {
+        return insert(task, "INSERT INTO tasks (task_name, task_desc, task_status) values (?, ?, ?)");
     }
 
     public void update(Task task) throws SQLException {
@@ -59,5 +44,12 @@ public class TaskDao extends AbstractDao<Task>{
         task.setId(rs.getLong("id"));
         task.setTaskStatus(rs.getBoolean("task_status"));
         return task;
+    }
+
+    @Override
+    protected void insertObject(Task task, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setString(1, task.getTaskName());
+        insertStatement.setString(2, task.getDesc());
+        insertStatement.setBoolean(3, task.getTaskStatus());
     }
 }

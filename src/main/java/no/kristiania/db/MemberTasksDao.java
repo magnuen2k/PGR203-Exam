@@ -9,6 +9,10 @@ public class MemberTasksDao extends AbstractDao<MemberTasks>{
         super(dataSource);
     }
 
+    public long insert(MemberTasks memberTasks) throws SQLException {
+        return insert(memberTasks, "INSERT INTO member_tasks (member_id, task_id) values (?, ?)");
+    }
+
     @Override
     protected MemberTasks mapRow(ResultSet rs) throws SQLException {
         MemberTasks memberTasks = new MemberTasks();
@@ -17,14 +21,10 @@ public class MemberTasksDao extends AbstractDao<MemberTasks>{
         return memberTasks;
     }
 
-    public void insert(MemberTasks memberTasks) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO member_tasks (member_id, task_id) values (?, ?)")) {
-                insertStatement.setLong(1, memberTasks.getMemberId());
-                insertStatement.setLong(2, memberTasks.getTaskId());
-                insertStatement.executeUpdate();
-            }
-        }
+    @Override
+    protected void insertObject(MemberTasks memberTasks, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setLong(1, memberTasks.getMemberId());
+        insertStatement.setLong(2, memberTasks.getTaskId());
     }
+
 }

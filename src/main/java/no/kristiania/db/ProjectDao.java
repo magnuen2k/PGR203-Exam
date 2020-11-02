@@ -10,22 +10,8 @@ public class ProjectDao extends AbstractDao<Project>{
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
-    public void insert(Project project) throws SQLException {
-        // Make connection to database
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO projects (project_name, project_desc, project_status) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                insertStatement.setString(1, project.getProjectName());
-                insertStatement.setString(2, project.getDesc());
-                insertStatement.setBoolean(3, project.getProjectStatus());
-                insertStatement.executeUpdate();
-
-                try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    project.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    public long insert(Project project) throws SQLException {
+       return insert(project, "INSERT INTO projects (project_name, project_desc, project_status) values (?, ?, ?)");
     }
 
     public void update(Project project, int id) throws SQLException {
@@ -57,5 +43,12 @@ public class ProjectDao extends AbstractDao<Project>{
         project.setDesc(rs.getString("project_desc"));
         project.setProjectStatus(rs.getBoolean("project_status"));
         return project;
+    }
+
+    @Override
+    protected void insertObject(Project project, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setString(1, project.getProjectName());
+        insertStatement.setString(2, project.getDesc());
+        insertStatement.setBoolean(3, project.getProjectStatus());
     }
 }

@@ -45,8 +45,8 @@ public class MemberPostController implements HttpController{
         member.setLastName(decodedLastName);
         member.setEmail(decodedEmail);
 
-        // Insert member object to db
-        memberDao.insertMember(member);
+        // Insert member object to db and set id
+        member.setId(memberDao.insertMember(member));
         logger.info("Adding " + member.getName() + " to the database");
 
         // Add redirect to response

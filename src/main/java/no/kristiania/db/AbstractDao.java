@@ -15,6 +15,21 @@ public abstract class AbstractDao<T> {
         this.dataSource = dataSource;
     }
 
+    public long insert(T object, String sql) throws SQLException{
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertObject(object, statement);
+            statement.executeUpdate();
+
+            ResultSet generatedkeys = statement.getGeneratedKeys();
+            generatedkeys.next();
+            if(object instanceof MemberTasks){
+                return 0; //Do not attempt to get ID on Connection Entities
+            }
+            return generatedkeys.getLong("id");
+        }
+    }
+
     public T retrieve(Long id, String sql) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -49,4 +64,5 @@ public abstract class AbstractDao<T> {
     }
 
     protected abstract T mapRow(ResultSet rs) throws SQLException;
+    protected abstract void insertObject(T obj, PreparedStatement insertStatement) throws SQLException;
 }
