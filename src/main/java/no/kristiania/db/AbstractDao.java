@@ -17,16 +17,19 @@ public abstract class AbstractDao<T> {
 
     public long insert(T object, String sql) throws SQLException{
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertObject(object, statement);
-            statement.executeUpdate();
+            PreparedStatement insertStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertObject(object, insertStatement);
+            insertStatement.executeUpdate();
 
-            ResultSet generatedkeys = statement.getGeneratedKeys();
-            generatedkeys.next();
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            generatedKeys.next();
+
+            // If object is "connection table" do not return id
             if(object instanceof MemberTasks){
-                return 0; //Do not attempt to get ID on Connection Entities
+                return 0;
             }
-            return generatedkeys.getLong("id");
+
+            return generatedKeys.getLong("id");
         }
     }
 
