@@ -28,7 +28,8 @@ public class MemberTaskUpdateController implements HttpController {
 
         Long memberId = Long.valueOf(responseParameter.getParameter("memberId"));
         Long taskId = Long.valueOf(responseParameter.getParameter("taskId"));
-        MemberTasks memberTasks = new MemberTasks();
+
+        MemberTasks memberTasks = memberTasksDao.retrieve(memberId);
         memberTasks.setMemberId(memberId);
         memberTasks.setTaskId(taskId);
 

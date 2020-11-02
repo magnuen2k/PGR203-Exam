@@ -1,5 +1,6 @@
 package no.kristiania.db.daos;
 
+import no.kristiania.db.objects.Member;
 import no.kristiania.db.objects.MemberTasks;
 
 import javax.sql.DataSource;
@@ -13,6 +14,10 @@ public class MemberTasksDao extends AbstractDao<MemberTasks>{
 
     public long insert(MemberTasks memberTasks) throws SQLException {
         return insert(memberTasks, "INSERT INTO member_tasks (member_id, task_id) values (?, ?)");
+    }
+
+    public MemberTasks retrieve(Long id) throws SQLException {
+        return retrieve(id, "SELECT * FROM member_tasks WHERE id = ?");
     }
 
     @Override

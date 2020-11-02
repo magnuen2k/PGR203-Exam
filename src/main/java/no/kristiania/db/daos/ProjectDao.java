@@ -16,13 +16,13 @@ public class ProjectDao extends AbstractDao<Project>{
        return insert(project, "INSERT INTO projects (project_name, project_desc, project_status) values (?, ?, ?)");
     }
 
-    public void update(Project project, int id) throws SQLException {
+    public void update(Project project, Long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             // Create statement and execute it
             try (PreparedStatement insertStatement = connection.prepareStatement("UPDATE projects SET project_name = (?), project_status = (?) WHERE id = (?)" )) {
                 insertStatement.setString(1, project.getProjectName());
                 insertStatement.setBoolean(2, project.getProjectStatus());
-                insertStatement.setInt(3, id);
+                insertStatement.setLong(3, id);
                 insertStatement.executeUpdate();
             }
         }
