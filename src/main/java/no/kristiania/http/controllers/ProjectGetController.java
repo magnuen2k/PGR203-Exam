@@ -1,12 +1,12 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.ProjectDao;
-import no.kristiania.db.Project;
+import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.objects.Project;
+import no.kristiania.http.HttpMessage;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.stream.Collectors;
 
 public class ProjectGetController implements HttpController {
     private ProjectDao projectDao;
@@ -26,7 +26,7 @@ public class ProjectGetController implements HttpController {
             // Check if project is active or not
             String status = project.getProjectStatus() ? "Active" : "Inactive";
             String notStatus = !(project.getProjectStatus()) ? "Active" : "Inactive";
-            String statusDropDown = "<select><option value='" + project.getProjectStatus() + " '>" + status + "</option><option value='" + !(project.getProjectStatus()) + "'>" + notStatus + "</option></select>";
+            String statusDropDown = "<select name='project_status'><option value='" + project.getProjectStatus() + " '>" + status + "</option><option value='" + !(project.getProjectStatus()) + "'>" + notStatus + "</option></select>";
 
             // Build output string
             // TODO add styling in css file

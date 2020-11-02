@@ -1,11 +1,13 @@
-package no.kristiania.http;
-import no.kristiania.db.MemberDao;
+package no.kristiania.http.controllers;
+import no.kristiania.db.daos.MemberDao;
+import no.kristiania.http.HttpMessage;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-public class MemberGetController implements HttpController{
+public class MemberGetController implements HttpController {
     private MemberDao memberDao;
 
     public MemberGetController(MemberDao memberDao) {

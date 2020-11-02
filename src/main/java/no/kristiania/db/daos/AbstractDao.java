@@ -1,5 +1,6 @@
-package no.kristiania.db;
+package no.kristiania.db.daos;
 
+import no.kristiania.db.objects.MemberTasks;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,24 @@ public abstract class AbstractDao<T> {
 
     public AbstractDao(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public long insert(T object, String sql) throws SQLException{
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement insertStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertObject(object, insertStatement);
+            insertStatement.executeUpdate();
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            generatedKeys.next();
+
+            // If object is "connection table" do not return id
+            if(object instanceof MemberTasks){
+                return 0;
+            }
+
+            return generatedKeys.getLong("id");
+        }
     }
 
     public T retrieve(Long id, String sql) throws SQLException {
@@ -49,4 +68,5 @@ public abstract class AbstractDao<T> {
     }
 
     protected abstract T mapRow(ResultSet rs) throws SQLException;
+    protected abstract void insertObject(T obj, PreparedStatement insertStatement) throws SQLException;
 }

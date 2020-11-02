@@ -1,15 +1,22 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.Member;
-import no.kristiania.db.MemberDao;
+import no.kristiania.db.objects.Member;
+import no.kristiania.db.daos.MemberDao;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
+import no.kristiania.http.QueryString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
-public class MemberPostController implements HttpController{
+public class MemberPostController implements HttpController {
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private MemberDao memberDao;
 
     public MemberPostController(MemberDao memberDao) {
@@ -32,9 +39,9 @@ public class MemberPostController implements HttpController{
         String email = requestParameter.getParameter("email_address");
 
         // Decode data to UTF-8 format
-        String decodedFirstName = URLDecoder.decode(firstName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedLastName = URLDecoder.decode(lastName, "UTF-8"); //Makes us able to use "æøå"
-        String decodedEmail = URLDecoder.decode(email, "UTF-8"); // Decoding email address to make sure '@' is correct and not %40
+        String decodedFirstName = URLDecoder.decode(firstName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedLastName = URLDecoder.decode(lastName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8); // Decoding email address to make sure '@' is correct and not %40
 
         // Create member object
         Member member = new Member();
@@ -42,8 +49,9 @@ public class MemberPostController implements HttpController{
         member.setLastName(decodedLastName);
         member.setEmail(decodedEmail);
 
-        // Insert member object to db
-        memberDao.insertMember(member);
+        // Insert member object to db and set id
+        member.setId(memberDao.insertMember(member));
+        logger.info("Adding " + member.getName() + " to the database");
 
         // Add redirect to response
         HttpMessage redirect = new HttpMessage();

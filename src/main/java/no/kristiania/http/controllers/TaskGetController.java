@@ -1,13 +1,14 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.Task;
-import no.kristiania.db.TaskDao;
+import no.kristiania.db.objects.Task;
+import no.kristiania.db.daos.TaskDao;
+import no.kristiania.http.HttpMessage;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class TaskGetController implements HttpController{
+public class TaskGetController implements HttpController {
     private TaskDao taskDao;
 
     public TaskGetController(TaskDao taskdao) {
@@ -33,7 +34,10 @@ public class TaskGetController implements HttpController{
             // TODO add project to output
             // TODO display members assigned to task (dropdownlist?)
             // TODO option to add member to task
-            body += "<div style='border: 2px solid black; margin-bottom: 20px'><p>" + task.getTaskName() + " - " + statusDropDown + "</p><p>" + task.getDesc() + "</p></div>";
+            body += "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                    "<p>" + task.getTaskName() + " - " + statusDropDown + "</p>" +
+                    "<p>" + task.getDesc() + "</p>" +
+                    "</div>";
         }
 
         body += "</div>";
