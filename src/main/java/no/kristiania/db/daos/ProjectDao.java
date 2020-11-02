@@ -1,4 +1,6 @@
-package no.kristiania.db;
+package no.kristiania.db.daos;
+
+import no.kristiania.db.objects.Project;
 
 import javax.sql.DataSource;
 import java.sql.*;

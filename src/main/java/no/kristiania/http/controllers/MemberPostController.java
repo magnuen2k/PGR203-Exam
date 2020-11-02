@@ -1,7 +1,10 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.Member;
-import no.kristiania.db.MemberDao;
+import no.kristiania.db.objects.Member;
+import no.kristiania.db.daos.MemberDao;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
+import no.kristiania.http.QueryString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +14,7 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.sql.SQLException;
 
-public class MemberPostController implements HttpController{
+public class MemberPostController implements HttpController {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private MemberDao memberDao;
 

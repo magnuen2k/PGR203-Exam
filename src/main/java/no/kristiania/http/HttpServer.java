@@ -1,6 +1,11 @@
 package no.kristiania.http;
 
-import no.kristiania.db.*;
+import no.kristiania.db.daos.MemberDao;
+import no.kristiania.db.daos.MemberTasksDao;
+import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.daos.TaskDao;
+import no.kristiania.db.objects.Member;
+import no.kristiania.http.controllers.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;

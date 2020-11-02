@@ -1,12 +1,15 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.Task;
-import no.kristiania.db.TaskDao;
+import no.kristiania.db.objects.Task;
+import no.kristiania.db.daos.TaskDao;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.QueryString;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class TaskUpdateController implements HttpController{
+public class TaskUpdateController implements HttpController {
     private TaskDao taskDao;
 
     public TaskUpdateController(TaskDao taskdao) {

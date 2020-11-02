@@ -1,16 +1,13 @@
 package no.kristiania.http;
 
-import no.kristiania.db.Member;
-import no.kristiania.db.MemberDao;
-import no.kristiania.http.HttpClient;
-import no.kristiania.http.HttpServer;
+import no.kristiania.db.objects.Member;
+import no.kristiania.db.daos.MemberDao;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Date;

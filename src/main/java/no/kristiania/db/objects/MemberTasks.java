@@ -1,4 +1,4 @@
-package no.kristiania.db;
+package no.kristiania.db.objects;
 
 public class MemberTasks {
     private Long memberId;

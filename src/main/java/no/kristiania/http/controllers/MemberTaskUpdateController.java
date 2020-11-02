@@ -1,15 +1,16 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.MemberTasks;
-import no.kristiania.db.MemberTasksDao;
-import no.kristiania.db.Task;
+import no.kristiania.db.objects.MemberTasks;
+import no.kristiania.db.daos.MemberTasksDao;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.QueryString;
 import org.postgresql.util.PSQLException;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class MemberTaskUpdateController implements HttpController{
+public class MemberTaskUpdateController implements HttpController {
     private MemberTasksDao memberTasksDao;
 
     public MemberTaskUpdateController(MemberTasksDao memberTasksDao) {

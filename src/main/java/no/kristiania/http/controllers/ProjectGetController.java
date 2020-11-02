@@ -1,12 +1,12 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.ProjectDao;
-import no.kristiania.db.Project;
+import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.objects.Project;
+import no.kristiania.http.HttpMessage;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.stream.Collectors;
 
 public class ProjectGetController implements HttpController {
     private ProjectDao projectDao;

@@ -1,5 +1,7 @@
 package no.kristiania.db;
 
+import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.objects.Project;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;

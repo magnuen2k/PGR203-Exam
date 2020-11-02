@@ -1,7 +1,9 @@
-package no.kristiania.http;
+package no.kristiania.http.controllers;
 
-import no.kristiania.db.ProjectDao;
-import no.kristiania.db.Project;
+import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.objects.Project;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.QueryString;
 
 import java.io.IOException;
 import java.net.Socket;
