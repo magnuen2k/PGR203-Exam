@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello World</title>
+    <title>Homepage</title>
     <link rel="stylesheet" href="./style/main.css">
     <!--
         link to animate library
@@ -26,14 +26,6 @@
     </nav>
 
     <main class="container">
-        <div>
-            <h2 class="animate__animated animate__fadeInLeft">All RP members</h2>
-            <div class="separator-line animate__animated animate__fadeInUp"></div>
-        </div>
-
-        <div id="projectMembers"></div>
-
-        <div class="separator-line animate__animated animate__fadeInUp"></div>
 
         <!-- Saving feature for exam (adding pictures to members?)
         <div class="images">
@@ -45,32 +37,47 @@
 
         <div class="separator-line animate__animated animate__fadeInUp"></div>
         -->
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="newMember.html">Add new <p style="display: inline; color: #eb5a55;">RP member</p></a>
+
+        <h2>Welcome to RP Hall Of Fame</h2>
+
+        <div class="buttons">
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="newMember.html">Add new <p style="display: inline; color: #eb5a55;">RP member</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="members.html">Display <p style="display: inline; color: #eb5a55;">RP members</p></a>
+            </div>
         </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="newTask.html">Add new <p style="display: inline; color: #eb5a55;">Task</p></a>
+        <div class="buttons">
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="newTask.html">Add new <p style="display: inline; color: #eb5a55;">Task</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="editTasks.html">Edit <p style="display: inline; color: #eb5a55;">Tasks</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="tasks.html">Display all <p style="display: inline; color: #eb5a55;">Tasks</p></a>
+            </div>
         </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="tasks.html">Display all <p style="display: inline; color: #eb5a55;">Tasks</p></a>
+        <div class="buttons">
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="newProject.html">Add new <p style="display: inline; color: #eb5a55;">Project</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="editProjects.html">Edit <p style="display: inline; color: #eb5a55;">Projects</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="projects.html">Display all <p style="display: inline; color: #eb5a55;">Projects</p></a>
+            </div>
         </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="newProject.html">Add new <p style="display: inline; color: #eb5a55;">Project</p></a>
-        </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="projects.html">Display all <p style="display: inline; color: #eb5a55;">Projects</p></a>
-        </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="addTaskToProject.html">Add task to <p style="display: inline; color: #eb5a55;">Project</p></a>
-        </div>
-        <div class="add-worker animate__animated animate__fadeInUp">
-            <a href="addMemberToTask.html">Add member to <p style="display: inline; color: #eb5a55;">Task</p></a>
+        <div class="buttons">
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="addTaskToProject.html">Add task to <p style="display: inline; color: #eb5a55;">Project</p></a>
+            </div>
+            <div class="add-worker animate__animated animate__fadeInUp">
+                <a href="addMemberToTask.html">Add member to <p style="display: inline; color: #eb5a55;">Task</p></a>
+            </div>
         </div>
     </main>
-    <script>
-        fetch("/api/projectMembers").then(response => response.text()).then(html => {
-            document.getElementById("projectMembers").innerHTML = html;
-        });
-    </script>
 </body>
 </html>

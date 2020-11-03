@@ -7,6 +7,7 @@ import no.kristiania.http.HttpMessage;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 public class TaskGetController implements HttpController {
     private TaskDao taskDao;
@@ -22,25 +23,11 @@ public class TaskGetController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        String body = "<div class='container'>";
-        for (Task task : taskDao.list()) {
-            // Check if task is active or not
-            String status = task.getTaskStatus() ? "Active" : "Inactive";
-            String notStatus = !(task.getTaskStatus()) ? "Active" : "Inactive";
-            String statusDropDown = "<select><option value='" + task.getTaskStatus() + " '>" + status + "</option><option value='" + !(task.getTaskStatus()) + "'>" + notStatus + "</option></select>";
-
-            // Build output string
-            // TODO add styling in css file
-            // TODO add project to output
-            // TODO display members assigned to task (dropdownlist?)
-            // TODO option to add member to task
-            body += "<div style='border: 2px solid black; margin-bottom: 20px'>" +
-                    "<p>" + task.getTaskName() + " - " + statusDropDown + "</p>" +
-                    "<p>" + task.getDesc() + "</p>" +
-                    "</div>";
-        }
-
-        body += "</div>";
-        return body;
+        return taskDao.list()
+                .stream().map(t -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                        "<p>Task: " + t.getTaskName() + " - " + (t.getTaskStatus() ? "Active" : "Inactive") + "</p>" +
+                        "<p>Description: " + t.getDesc() + "</p>" +
+                        "</div>")
+                .collect(Collectors.joining());
     }
 }

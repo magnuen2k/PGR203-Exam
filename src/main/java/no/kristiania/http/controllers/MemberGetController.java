@@ -21,11 +21,8 @@ public class MemberGetController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        String body = "<ul>";
-        body += memberDao.list()
-               .stream().map(m -> "<li>Name: " + m.getName() + " - Email: " + m.getEmail() + "</li>")
-               .collect(Collectors.joining());
-        body += "</ul>";
-        return body;
+        return memberDao.list()
+                .stream().map(m -> "<li>Name: " + m.getName() + " - Email: " + m.getEmail() + "</li>")
+                .collect(Collectors.joining());
     }
 }

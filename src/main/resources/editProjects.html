@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tasks</title>
+    <title>Edit project</title>
     <link rel="stylesheet" href="./style/main.css">
 </head>
 <body>
@@ -16,11 +16,12 @@
         </ul>
     </div>
 </nav>
-<div id="projectTasks" class="container"></div>
+
+<div id="projectList" class="container"></div>
 </body>
 <script>
-    fetch("/api/projectTasks").then(response => response.text()).then(html => {
-        document.getElementById("projectTasks").innerHTML = html;
+    fetch("/api/editProjects").then(response => response.text()).then(html => {
+        document.getElementById("projectList").innerHTML = html;
     });
 </script>
 </html>

@@ -25,7 +25,8 @@ class MemberDaoTest {
     }
 
     @Test
-    void shouldListInsertedProducts() throws SQLException {
+    void shouldListInsertedMembers() throws SQLException {
+
         memberDao.insertMember(exampleMember());
         memberDao.insertMember(exampleMember());
         Member member = exampleMember();

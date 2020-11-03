@@ -7,6 +7,7 @@ import no.kristiania.http.HttpMessage;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 public class ProjectGetController implements HttpController {
     private ProjectDao projectDao;
@@ -21,31 +22,11 @@ public class ProjectGetController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        String body = "<div class='container'>";
-        for (Project project : projectDao.list()) {
-            // Check if project is active or not
-            String status = project.getProjectStatus() ? "Active" : "Inactive";
-            String notStatus = !(project.getProjectStatus()) ? "Active" : "Inactive";
-            String statusDropDown = "<select name='project_status'><option value='" + project.getProjectStatus() + " '>" + status + "</option><option value='" + !(project.getProjectStatus()) + "'>" + notStatus + "</option></select>";
-
-            // Build output string
-            // TODO add styling in css file
-            // TODO add project to output
-            // TODO display members assigned to project (dropdownlist?)
-            // TODO option to add member to project
-            body += "<div style='border: 2px solid black; margin-bottom: 20px'>" +
-                    "<form method='POST' action='/api/updateProject'>" +
-                    "<label>Project Name<input type='text' name='project_name' value='" + project.getProjectName() + "' /></label>" +
-                    "<label style='display: none;'>Project ID<input type='text' name='id'' value='" + project.getId() + "'/></label>" +
-                    " - " + statusDropDown +
-                    "<p>" + project.getDesc() + "</p>" +
-                    "<br><button>SUBMIT</button>" +
-                    "</form>" +
-                    "</div>";
-        }
-
-        body += "</div>";
-
-        return body;
+        return projectDao.list()
+                .stream().map(p -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                        "<p>Project Name: " + p.getProjectName() + " - " + (p.getProjectStatus() ? "Active" : "Inactive") + "</p>" +
+                        "<p>Project Description: " + p.getDesc() + "</p>" +
+                        "</div>")
+                .collect(Collectors.joining());
     }
 }

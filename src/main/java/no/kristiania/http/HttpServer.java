@@ -34,17 +34,19 @@ public class HttpServer {
 
         // Using Map.ofEntries to be able to use over 10 routes
         controllers = Map.ofEntries(
-                Map.entry("/api/tasks", new TaskPostController(taskDao)),
-                Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
                 Map.entry("/api/members", new MemberPostController(memberDao)),
                 Map.entry("/api/projectMembers", new MemberGetController(memberDao)),
+                Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
                 Map.entry("/api/projects", new ProjectPostController(projectDao)),
                 Map.entry("/api/projectList", new ProjectGetController(projectDao)),
+                Map.entry("/api/editProjects", new ProjectEditController(projectDao)),
                 Map.entry("/api/updateProject", new ProjectUpdateController(projectDao)),
-                Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
                 Map.entry("/api/projectOptions", new ProjectOptionsController(projectDao)),
+                Map.entry("/api/tasks", new TaskPostController(taskDao)),
+                Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
+                Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
                 Map.entry("/api/updateTask", new TaskUpdateController(taskDao)),
-                Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
+                Map.entry("/api/editTasks", new TaskEditController(taskDao)),
                 Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
         );
 

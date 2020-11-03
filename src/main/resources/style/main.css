@@ -26,7 +26,7 @@
     border: 2px solid black;
     padding: 20px;
     margin-top: 50px;
-    width: 200px;
+    width: 25%;
     text-align: center;
 }
 
@@ -117,4 +117,11 @@ h1 {
 
 .returntomainpage {
     color: #eb5a55;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    border-bottom: 1px solid gray;
 }

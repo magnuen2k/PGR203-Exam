@@ -13,6 +13,15 @@
 3. Run `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
 4. Go to `localhost:8080` to interact with the server.
 
+## Program functionality
+-The program is made to be used within the net browser(we have mainly tested it in chrome) by 
+visiting the address http://localhost:8080/index.html.
+-There is implemented a navigation menu in the program that should make it easy  to use.
+-There is functionality for adding members, projects and tasks, and you could assign multiple members to
+multiple tasks, and a task could be assigned to a project.
+-Status is assigned to every task and project, and could be set to active or inactive.
+-There is filtering functionality for filtering task on members and task status.
+
 ## Work process
 We have been working exclusively over GitHub and Discord while sharing screens and observing each other.
 We have also been doing some ping pong programming and quite a bit of test driven development for some of
@@ -27,15 +36,27 @@ to a minimum, and it has given us way more freedom and time to develop the funct
 We have had a lot of conversations during the project and have been able to learn from each other.
 In many situations it has been great to have more than two eyes looking at the code, and analyzing the functionality,
 to make the best of it and to make the code more readable and understandable for a third party such as the person
-grading the exam. 
+grading the exam.
+There is quite a few commits on the master branch. This is because we had some issues during one of the merges, and 
+github did recommend using github desktop (the issues because we changed the file structure of the project).
+This did not work out, and we had to manually fix it, 
+or revert changes back to the previous commit. We did resolve the issues, but the extra commits remain on the branch. 
 
 ## Things learned while working like this
--The usage of GitHub issues has made it way more easy to stay on point and not get too distracted.
--We already started generating issue's that we will look at and implement on the exam, using GitHub issues.
+-The usage of GitHub issues has made it way more easy to stay on point and not get too distracted. It has also made
+the communication better within the group. Issues via github is really a great feature.
 -Ping pong programming works well in some cases, but there is also other efficient ways of working while being
 multiple people working on the same issue/ problem.
--Communication is key and the communication and planning has been great. This sets the bar for the exam for sure.
- 
+-Communication is key and the communication and planning has always been great. This sets the bar for the exam for sure.
+-We have still managed to learn some new "dos and don'ts" when it comes to github. This is declared in the work process.
+-It is important to take on a project step by step, and frequent breaks is key to productivity. Our general productivity
+and common sense drops, if there is too long in between each break.
+-It is the very first time we have ever worked on a project of this scale, some fixes and implementations might
+be less ideal, but there has been countless hours of brainstorming and problem fixing to get to where we are at now.
+The final result might reflect the fact that it is "home made", but it has been working fine during our testing, and
+we are quite proud of the end result.
+
+
 ## Datamodel
 This is a temporary datamodel. The final result will look different. 
 We plan on using 4+ tables to make the database highly functional

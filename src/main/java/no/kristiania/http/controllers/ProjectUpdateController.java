@@ -28,6 +28,7 @@ public class ProjectUpdateController implements HttpController {
 
         // Get data from POST
         String projectName = requestParameter.getParameter("project_name");
+        String projectDesc = requestParameter.getParameter("project_desc");
         long projectId = Integer.parseInt(requestParameter.getParameter("id"));
         boolean projectStatus = Boolean.parseBoolean(requestParameter.getParameter("project_status"));
 
@@ -37,6 +38,7 @@ public class ProjectUpdateController implements HttpController {
         // Insert data to project object
         Project project = projectDao.retrieve(projectId);
         project.setProjectName(decodedProjectName);
+        project.setDesc(projectDesc);
         project.setProjectStatus(projectStatus);
 
         // Insert project object to db

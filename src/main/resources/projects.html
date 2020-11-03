@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Projects</title>
     <link rel="stylesheet" href="./style/main.css">
 </head>
 <body>
@@ -16,7 +16,10 @@
         </ul>
     </div>
 </nav>
-<div id="projectList"></div>
+<div class="add-worker animate__animated animate__fadeInUp container">
+    <a href="editProjects.html">Edit <p style="display: inline; color: #eb5a55;">Projects</p></a>
+</div>
+<div id="projectList" class="container"></div>
 </body>
 <script>
     fetch("/api/projectList").then(response => response.text()).then(html => {

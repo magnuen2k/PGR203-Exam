@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tasks</title>
+    <title>Members</title>
     <link rel="stylesheet" href="./style/main.css">
 </head>
 <body>
@@ -16,11 +16,20 @@
         </ul>
     </div>
 </nav>
-<div id="projectTasks" class="container"></div>
+<main class="container">
+    <div>
+        <h2 class="animate__animated animate__fadeInLeft">All RP members</h2>
+        <div class="separator-line animate__animated animate__fadeInUp"></div>
+    </div>
+
+    <ul id="projectMembers"></ul>
+
+    <div class="separator-line animate__animated animate__fadeInUp"></div>
+</main>
 </body>
 <script>
-    fetch("/api/projectTasks").then(response => response.text()).then(html => {
-        document.getElementById("projectTasks").innerHTML = html;
+    fetch("/api/projectMembers").then(response => response.text()).then(html => {
+        document.getElementById("projectMembers").innerHTML = html;
     });
 </script>
 </html>
