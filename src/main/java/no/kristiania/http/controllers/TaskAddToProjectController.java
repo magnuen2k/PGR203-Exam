@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class TaskUpdateController implements HttpController {
+public class TaskAddToProjectController implements HttpController {
     private TaskDao taskDao;
 
-    public TaskUpdateController(TaskDao taskdao) {
+    public TaskAddToProjectController(TaskDao taskdao) {
         this.taskDao = taskdao;
     }
 

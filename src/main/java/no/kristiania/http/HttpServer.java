@@ -45,7 +45,7 @@ public class HttpServer {
                 Map.entry("/api/tasks", new TaskPostController(taskDao)),
                 Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
                 Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
-                Map.entry("/api/updateTask", new TaskUpdateController(taskDao)),
+                Map.entry("/api/addTaskToProject", new TaskAddToProjectController(taskDao)),
                 Map.entry("/api/editTasks", new TaskEditController(taskDao)),
                 Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
         );
