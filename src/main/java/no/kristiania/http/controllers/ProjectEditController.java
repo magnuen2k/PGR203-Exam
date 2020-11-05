@@ -30,7 +30,7 @@ public class ProjectEditController implements HttpController {
                 .stream().map(p -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
                         "<form method='POST' action='/api/updateProject'>" +
                         "<label>Project Name<input type='text' name='project_name' value='" + p.getProjectName() + "' /></label>" +
-                        "<label style='display: none;'>Project ID<input type='text' name='id'' value='" + p.getId() + "'/></label>" +
+                        "<label>Project ID<input type='hidden' name='id'' value='" + p.getId() + "'/></label>" +
                         " - " + statusDropDown(p.getProjectStatus()) +
                         "<label>Project description <input type='text' name='project_desc' value='" + p.getDesc() + "' /></label>" +
                         "<br><button>Edit project</button>" +

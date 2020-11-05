@@ -70,4 +70,8 @@ public class MemberDao extends AbstractDao<Member> {
             }
         }
     }
+
+    public void update(Member member, long id) throws SQLException {
+        update(member, "UPDATE members SET first_name = (?), last_name = (?), email = (?) WHERE id = (?)", id, 4);
+    }
 }

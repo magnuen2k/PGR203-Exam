@@ -39,6 +39,8 @@ public class HttpServer {
                 Map.entry("/api/members", new MemberPostController(memberDao)),
                 Map.entry("/api/projectMembers", new MemberGetController(memberDao)),
                 Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
+                Map.entry("/api/editMembers", new MemberEditController(memberDao)),
+                Map.entry("/api/updateMember", new MemberUpdateController(memberDao)),
                 Map.entry("/api/projects", new ProjectPostController(projectDao)),
                 Map.entry("/api/projectList", new ProjectGetController(projectDao)),
                 Map.entry("/api/editProjects", new ProjectEditController(projectDao)),

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit member</title>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>
+<nav>
+    <div class="container">
+        <ul>
+            <div class="testDiv animate__animated animate__fadeInDown "><strong>R</strong><p style="color: white; display: inline">P</p> <strong>H</strong><p style="color: white; display: inline">all of </p><strong>F</strong><p style="color: white; display: inline">ame</p></div>
+            <li><a href="index.html">Home Of RPs</a></li>
+            <li><a href="newMember.html">Add New RP</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div id="memberList" class="container"></div>
+</body>
+<script>
+    fetch("/api/editMembers").then(response => response.text()).then(html => {
+        document.getElementById("memberList").innerHTML = html;
+    });
+</script>
+</html>
