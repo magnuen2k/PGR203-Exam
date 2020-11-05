@@ -19,7 +19,9 @@ public class ProjectDao extends AbstractDao<Project>{
     public void update(Project project, Long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement("UPDATE projects SET project_name = (?), project_desc = (?), project_status = (?) WHERE id = (?)" )) {
+            try (PreparedStatement insertStatement = connection.prepareStatement(
+                    "UPDATE projects SET project_name = (?), project_desc = (?), project_status = (?) WHERE id = (?)"
+            )) {
                 insertStatement.setString(1, project.getProjectName());
                 insertStatement.setString(2, project.getDesc());
                 insertStatement.setBoolean(3, project.getProjectStatus());

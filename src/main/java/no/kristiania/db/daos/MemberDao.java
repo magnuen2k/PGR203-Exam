@@ -4,6 +4,7 @@ import no.kristiania.db.objects.Member;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDao extends AbstractDao<Member> {
@@ -44,5 +45,29 @@ public class MemberDao extends AbstractDao<Member> {
         member.setLastName(rs.getString("last_name"));
         member.setEmail(rs.getString("email"));
         return member;
+    }
+
+    public List<Long> getMembersOnTask(long id) throws SQLException {
+       /* List<Member> members = list("select member_id from tasks left join member_tasks mt on tasks.id = mt.task_id where task_id =" + id);
+        List<Long> memberIds = new ArrayList<>();
+        for (Member m : members) {
+            memberIds.add(m.getId());
+        }
+        return memberIds;*/
+
+        try (Connection connection = dataSource.getConnection()) {
+            // Create statement
+            try (PreparedStatement selectStatement = connection.prepareStatement("select member_id from tasks left join member_tasks mt on tasks.id = mt.task_id where task_id =" + id)) {
+                // Execute statement and store result in variable
+                try (ResultSet res = selectStatement.executeQuery()) {
+                    List<Long> task = new ArrayList<>();
+                    // Loop through result of sql query and build a list with all task
+                    while(res.next()){
+                        task.add(res.getLong("member_id"));
+                    }
+                    return task;
+                }
+            }
+        }
     }
 }

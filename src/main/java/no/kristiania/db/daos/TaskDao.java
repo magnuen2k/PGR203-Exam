@@ -30,6 +30,21 @@ public class TaskDao extends AbstractDao<Task>{
         }
     }
 
+    public void updateTask(Task task, long taskId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            // Create statement and execute it
+            try (PreparedStatement insertStatement = connection.prepareStatement(
+                    "UPDATE tasks SET task_name = (?), task_desc = (?), task_status = (?) WHERE id = (?)"
+            )) {
+                insertStatement.setString(1, task.getTaskName());
+                insertStatement.setString(2, task.getDesc());
+                insertStatement.setBoolean(3, task.getTaskStatus());
+                insertStatement.setLong(4, taskId);
+                insertStatement.executeUpdate();
+            }
+        }
+    }
+
     public Task retrieve(Long id) throws SQLException {
         return retrieve(id, "SELECT * FROM tasks WHERE id = ?");
     }
@@ -45,6 +60,11 @@ public class TaskDao extends AbstractDao<Task>{
         task.setDesc(rs.getString("task_desc"));
         task.setId(rs.getLong("id"));
         task.setTaskStatus(rs.getBoolean("task_status"));
+
+        Long projectId = rs.getLong("project_id");
+        if(projectId != 0) {
+            task.setProjectId(projectId);
+        }
         return task;
     }
 
@@ -54,4 +74,5 @@ public class TaskDao extends AbstractDao<Task>{
         insertStatement.setString(2, task.getDesc());
         insertStatement.setBoolean(3, task.getTaskStatus());
     }
+
 }

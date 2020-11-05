@@ -58,9 +58,12 @@ we are quite proud of the end result.
 
 
 ## Datamodel
-This is a temporary datamodel. The final result will look different. 
-We plan on using 4+ tables to make the database highly functional
-![UML image](http://www.plantuml.com/plantuml/png/XSvD2i9030NWVK-HfI9UeAjk58Jg7QAJra3ImYHrKtftBOCW_R7RV2-yLvXZz4ubUmYQmPNqJX7w3A2lc2GCSAmucjzGAGVpo4tzYuBhHeeiIy0X1sdJJScVxUTugCdFtwRTFhtD8oLk93RqD6vQvqiORRRD9jjUBOTfeCJ_dfgNCVKc6RA2cj2fl040)
+We are using 4 tables. The member_tasks table is just to connect members and tasks.
+We realized after consulting with Johannes and the project was more or less finished, that we could
+have used a slightly different approach, where we would have projects connected to members instead of tasks
+to make the datamodel a bit better, and it would be a better way of doing it i larger and more advanced projects.
+We did learn from it, and te application is ok for this project.
+![UML image](https://user-images.githubusercontent.com/56038804/98135355-0583a600-1ec0-11eb-90d6-b8965e1efb21.png)
 
 ### Contributors 
 Kai Amundsen, Stian Westerheim & Magnus Enholm

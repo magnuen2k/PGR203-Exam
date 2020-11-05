@@ -5,6 +5,7 @@ import no.kristiania.db.objects.MemberTasks;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 public class MemberTasksDao extends AbstractDao<MemberTasks>{
 
@@ -18,6 +19,14 @@ public class MemberTasksDao extends AbstractDao<MemberTasks>{
 
     public MemberTasks retrieve(Long id) throws SQLException {
         return retrieve(id, "SELECT * FROM member_tasks WHERE id = ?");
+    }
+
+    public List<MemberTasks> filter(Long memberId, boolean status) throws SQLException {
+        return list("SELECT member_id, task_id\n" +
+                "FROM member_tasks\n" +
+                "Left JOIN members m on member_id = m.id\n" +
+                "RIGHT JOIN tasks t on task_id = t.id\n" +
+                "WHERE task_status = " + status + " AND member_id = " + memberId);
     }
 
     @Override

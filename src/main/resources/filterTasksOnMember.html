@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter tasks on member</title>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>
+<nav>
+    <div class="container">
+        <ul>
+            <div class="testDiv animate__animated animate__fadeInDown "><strong>R</strong><p style="color: white; display: inline">P</p> <strong>H</strong><p style="color: white; display: inline">all of </p><strong>F</strong><p style="color: white; display: inline">ame</p></div>
+            <li><a href="index.html">Home Of RPs</a></li>
+            <li><a href="newMember.html">Add New RP</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+</nav>
+    <main class="container">
+        <form>
+            <p>Member: <select name="memberId" id="memberId" ></select></p>
+            <p>Status: <select name="status">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select></p>
+            <button id="btn-yes" >Filter</button>
+        </form>
+        <button id="btn-no" >No filter</button>
+        <div id="tasks"></div>
+    </main>
+
+</body>
+<script>
+    fetch("/api/memberOptions").then(response => response.text()).then(html => {
+        document.getElementById("memberId").innerHTML = html;
+    });
+
+    fetch("/api/projectTasks" + location.search).then(response => response.text()).then(html => {
+        document.getElementById("tasks").innerHTML = html;
+        console.log(html);
+    });
+
+    document.getElementById("btn-no").addEventListener("click", function(event){
+        window.location.href = "filterTasksOnMember.html";
+    });
+</script>
+</html>

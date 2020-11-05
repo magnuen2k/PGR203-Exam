@@ -32,35 +32,30 @@ class HttpServerTest {
 
    @Test
     void checkStatusCodeOK() throws IOException {
-        //new HttpServer(33332);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/echo");
         assertEquals(200, client.getStatusCode());
     }
 
     @Test
     void checkIfNotFound() throws IOException {
-        //new HttpServer(12222);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/echo?status=404");
         assertEquals(404, client.getStatusCode());
     }
 
     @Test
     void correctContentLength() throws IOException {
-        //new HttpServer(44444);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/echo?body=RaidShadowLegends");
         assertEquals("17", client.getResponseHeader("Content-Length"));
     }
 
     @Test
     void correctBodyContent() throws IOException {
-        //new HttpServer(23234);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/echo?body=BigBrain");
         assertEquals("BigBrain", client.getResponseBody());
     }
 
     @Test
     void shouldReturnFileFromDisk() throws IOException {
-        //HttpServer server = new HttpServer(5555);
         File contentRoot = new File("target/test-classes");
 
         String fileContent = "Hello World " + new Date();
@@ -73,9 +68,7 @@ class HttpServerTest {
 
     @Test
     void affirmContentTypeHTML() throws IOException {
-        //HttpServer server = new HttpServer(30006);
         File contentRoot = new File("target/test-classes");
-
 
         Files.writeString(new File(contentRoot, "index.html").toPath(), "<h2>Hello World</h2>");
 
@@ -84,8 +77,17 @@ class HttpServerTest {
     }
 
     @Test
+    void affirmContentTypeCSS() throws IOException {
+        File contentRoot = new File("target/test-classes");
+
+        Files.writeString(new File(contentRoot, "style.css").toPath(), "body { margin: 0 }");
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/style.css");
+        assertEquals("text/css", client.getResponseHeader("Content-Type"));
+    }
+
+    @Test
     void affirmContentTypeTxt() throws IOException {
-        //HttpServer server = new HttpServer(30056);
         File contentRoot = new File("target/test-classes");
 
         Files.writeString(new File(contentRoot, "Hei.txt").toPath(), "Hei");
@@ -94,10 +96,8 @@ class HttpServerTest {
         assertEquals("text/plain", client.getResponseHeader("Content-Type"));
     }
 
-
     @Test
     void affirmFileNotFound404() throws IOException {
-        //HttpServer server = new HttpServer(2227);
         File contentRoot = new File("target/test-classes");
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "Hei");
@@ -106,7 +106,6 @@ class HttpServerTest {
 
     @Test
     void shouldPostNewMember() throws IOException, SQLException {
-        //HttpServer server = new HttpServer(10008, dataSource);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/members", "POST", "first_name=test&last_name=dao&email_address=test%40dao.com");
         assertEquals(302, client.getStatusCode());
         assertThat(server.getMemberNames())
@@ -116,7 +115,6 @@ class HttpServerTest {
 
     @Test
     void shouldReturnExistingMembers() throws IOException, SQLException {
-        //HttpServer server = new HttpServer(10009, dataSource);
         MemberDao memberDao = new MemberDao(dataSource);
         Member member = new Member();
         member.setFirstName("Arild");

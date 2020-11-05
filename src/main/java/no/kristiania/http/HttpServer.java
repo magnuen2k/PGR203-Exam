@@ -5,6 +5,7 @@ import no.kristiania.db.daos.MemberTasksDao;
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.db.daos.TaskDao;
 import no.kristiania.db.objects.Member;
+import no.kristiania.db.objects.Task;
 import no.kristiania.http.controllers.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -34,6 +35,7 @@ public class HttpServer {
 
         // Using Map.ofEntries to be able to use over 10 routes
         controllers = Map.ofEntries(
+                Map.entry("/", new RedirectController("index.html")),
                 Map.entry("/api/members", new MemberPostController(memberDao)),
                 Map.entry("/api/projectMembers", new MemberGetController(memberDao)),
                 Map.entry("/api/memberOptions", new MemberOptionsController(memberDao)),
@@ -43,11 +45,13 @@ public class HttpServer {
                 Map.entry("/api/updateProject", new ProjectUpdateController(projectDao)),
                 Map.entry("/api/projectOptions", new ProjectOptionsController(projectDao)),
                 Map.entry("/api/tasks", new TaskPostController(taskDao)),
-                Map.entry("/api/projectTasks", new TaskGetController(taskDao)),
+                Map.entry("/api/projectTasks", new TaskGetController(taskDao, memberTasksDao, memberDao, projectDao)),
                 Map.entry("/api/taskOptions", new TaskOptionsController(taskDao)),
                 Map.entry("/api/addTaskToProject", new TaskAddToProjectController(taskDao)),
                 Map.entry("/api/editTasks", new TaskEditController(taskDao)),
+                Map.entry("/api/updateTasks", new TaskUpdateController(taskDao)),
                 Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
+                // Map.entry("/api/filterTasksOnMember", new FilterTasksOnMemberController(memberDao, memberTasksDao, projectDao, taskDao))
         );
 
         serverSocket = new ServerSocket(port);
@@ -131,6 +135,7 @@ public class HttpServer {
                 response.write(clientSocket);
             }
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            assert inputStream != null;
             inputStream.transferTo(buffer);
 
             // If the file is HTML, make sure contentType is "text/html"
