@@ -57,6 +57,23 @@ class MemberDaoTest {
                 .isEqualTo(null);
     }
 
+    @Test
+    void shouldUpdateMember() throws SQLException {
+        Member m1 = exampleMember();
+        m1.setId(memberDao.insertMember(m1));
+        Member m2 = exampleMember();
+        memberDao.update(m2, m1.getId());
+        assertThat(memberDao.retrieve(m1.getId()))
+                .extracting(Member::getName)
+                .isEqualTo(m2.getName());
+    }
+
+    // Both method and test might be better in a different dao? MemberTasksDao?
+    @Test
+    void shouldGetAllMemberIdsOnTask() {
+        // Create test for getting memberIds on a task
+    }
+
     private Member exampleMember() {
         Member member = new Member();
         member.setFirstName(exampleFirstName());

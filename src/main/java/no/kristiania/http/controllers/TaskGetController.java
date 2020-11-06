@@ -3,6 +3,7 @@ package no.kristiania.http.controllers;
 import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.daos.MemberTasksDao;
 import no.kristiania.db.daos.ProjectDao;
+import no.kristiania.db.objects.Member;
 import no.kristiania.db.objects.MemberTasks;
 import no.kristiania.db.objects.Task;
 import no.kristiania.db.daos.TaskDao;
@@ -66,27 +67,19 @@ public class TaskGetController implements HttpController {
         }
 
         // TODO Try using streams
-        String body = "";
+        StringBuilder body = new StringBuilder();
         for(Task t : taskDao.list()) {
-            // System.out.println("--------------------");
-            body += "<div style='border: 2px solid black; margin-bottom: 20px'>" +
-                    "<p>Task: " + t.getTaskName() + " - " + (t.getTaskStatus() ? "Active" : "Inactive") + "</p>" +
-                    "<p>Description: " + t.getDesc() + "</p>";
+            body.append("<div style='border: 2px solid black; margin-bottom: 20px'>" + "<p>Task: ").append(t.getTaskName()).append(" - ").append(t.getTaskStatus() ? "Active" : "Inactive").append("</p>").append("<p>Description: ").append(t.getDesc()).append("</p>");
 
-            body += "<select>";
-            List<Long> memberIds = memberDao.getMembersOnTask(t.getId());
-//            if(memberIds.size() != 0) {
-//                for (int i = 0; i < memberIds.size(); i++) {
-//                    System.out.println("Task" + t.getId()  + "Contains: " + memberIds.get(i));
-//                }
-//            }
-            for (int i = 0; i < memberIds.size(); i++) {
-                    body += "<option value='" + memberDao.retrieve(memberIds.get(i)).getId() + "'>" + memberDao.retrieve(memberIds.get(i)).getName() + "</option>";
+            body.append("<select>");
+            List<Member> members = memberDao.getMembersOnTask(t.getId());
+            for (Member member : members) {
+                body.append("<option value='").append(member.getId()).append("'>").append(member.getName()).append("</option>");
             }
-            body += "</select></div>";
+            body.append("</select></div>");
         }
 
-        return body;
+        return body.toString();
 
         /*return taskDao.list()
                 .stream().map(t -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +

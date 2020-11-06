@@ -19,6 +19,10 @@ public class MemberDao extends AbstractDao<Member> {
         return insert(member, "INSERT INTO members (first_name, last_name, email) values (?, ?, ?)");
     }
 
+    public void update(Member member, long id) throws SQLException {
+        update(member, "UPDATE members SET first_name = (?), last_name = (?), email = (?) WHERE id = (?)", id, 4);
+    }
+
     @Override
     protected void insertObject(Member member, PreparedStatement insertStatement) throws SQLException {
         insertStatement.setString(1, member.getFirstName());
@@ -37,6 +41,15 @@ public class MemberDao extends AbstractDao<Member> {
        return list("SELECT * FROM members ORDER BY id ASC");
     }
 
+    // Should not be a concatenated string
+    public List<Member> getMembersOnTask(long id) throws SQLException {
+        return list("select m.* " +
+                "from tasks t, members m, member_tasks mt " +
+                "where t.id = mt.task_id " +
+                "AND mt.member_id = m.id " +
+                "AND mt.task_id =" + id);
+    }
+
     @Override
     protected Member mapRow(ResultSet rs) throws SQLException {
         Member member = new Member();
@@ -45,33 +58,5 @@ public class MemberDao extends AbstractDao<Member> {
         member.setLastName(rs.getString("last_name"));
         member.setEmail(rs.getString("email"));
         return member;
-    }
-
-    public List<Long> getMembersOnTask(long id) throws SQLException {
-       /* List<Member> members = list("select member_id from tasks left join member_tasks mt on tasks.id = mt.task_id where task_id =" + id);
-        List<Long> memberIds = new ArrayList<>();
-        for (Member m : members) {
-            memberIds.add(m.getId());
-        }
-        return memberIds;*/
-
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement
-            try (PreparedStatement selectStatement = connection.prepareStatement("select member_id from tasks left join member_tasks mt on tasks.id = mt.task_id where task_id =" + id)) {
-                // Execute statement and store result in variable
-                try (ResultSet res = selectStatement.executeQuery()) {
-                    List<Long> task = new ArrayList<>();
-                    // Loop through result of sql query and build a list with all task
-                    while(res.next()){
-                        task.add(res.getLong("member_id"));
-                    }
-                    return task;
-                }
-            }
-        }
-    }
-
-    public void update(Member member, long id) throws SQLException {
-        update(member, "UPDATE members SET first_name = (?), last_name = (?), email = (?) WHERE id = (?)", id, 4);
     }
 }
