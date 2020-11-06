@@ -5,7 +5,6 @@ import no.kristiania.db.daos.MemberTasksDao;
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.db.daos.TaskDao;
 import no.kristiania.db.objects.Member;
-import no.kristiania.db.objects.Task;
 import no.kristiania.http.controllers.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -200,12 +199,8 @@ public class HttpServer {
 
         HttpServer server = new HttpServer(8080, dataSource);
 
-      
-        logger.info("To interact with the server, go to: localhost:" + server.getPort() + "/index.html");
+        logger.info("To interact with the server, go to: http://localhost:" + server.getPort() + "/index.html");
     }
-
-    
-   
 
     public List<Member> getMemberNames() throws SQLException {
         return memberDao.list();

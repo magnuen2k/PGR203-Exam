@@ -45,6 +45,17 @@ public abstract class AbstractDao<T> {
         }
     }
 
+    public void updateOneRow(T object, String sql, long value, long id) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            // Create statement and execute it
+            try (PreparedStatement insertStatement = connection.prepareStatement(sql)) {
+                insertStatement.setLong(1, value);
+                insertStatement.setLong(2, id);
+                insertStatement.executeUpdate();
+            }
+        }
+    }
+
     public T retrieve(Long id, String sql) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {

@@ -4,14 +4,12 @@ import no.kristiania.db.objects.Member;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDao extends AbstractDao<Member> {
 
     public MemberDao(DataSource dataSource) {
         super(dataSource);
-
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
@@ -33,7 +31,6 @@ public class MemberDao extends AbstractDao<Member> {
     public Member retrieve(Long id) throws SQLException {
         return retrieve(id, "SELECT * FROM members WHERE id = ?");
     }
-
 
     // List all members in Database
     // Passing in sql statement - SELECT * - loop through result of select and return a List with all members

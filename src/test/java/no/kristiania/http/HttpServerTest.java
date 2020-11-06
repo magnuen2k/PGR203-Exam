@@ -1,7 +1,10 @@
 package no.kristiania.http;
 
+import no.kristiania.db.daos.*;
 import no.kristiania.db.objects.Member;
-import no.kristiania.db.daos.MemberDao;
+import no.kristiania.db.objects.MemberTasks;
+import no.kristiania.db.objects.Project;
+import no.kristiania.db.objects.Task;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +15,9 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Date;
 
+import static no.kristiania.db.daos.MemberDaoTest.exampleMember;
+import static no.kristiania.db.daos.ProjectDaoTest.exampleProject;
+import static no.kristiania.db.daos.TaskDaoTest.exampleTask;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -113,6 +119,26 @@ class HttpServerTest {
                 .contains("test dao");
     }
 
+   @Test
+    void shouldPostNewTask() throws IOException, SQLException {
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/tasks", "POST", "task_name=task1&task_desc=dao&task_status=true");
+        assertEquals(302, client.getStatusCode());
+        TaskDao taskDao = new TaskDao(dataSource);
+        assertThat(taskDao.list())
+                .extracting(Task::getTaskName)
+                .contains("task1");
+    }
+
+    @Test
+    void shouldPostNewProject() throws IOException, SQLException {
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projects", "POST", "project_name=project1&project_desc=dao&project_status=true");
+        assertEquals(302, client.getStatusCode());
+        ProjectDao projectDao = new ProjectDao(dataSource);
+        assertThat(projectDao.list())
+                .extracting(Project::getProjectName)
+                .contains("project1");
+    }
+
     @Test
     void shouldReturnExistingMembers() throws IOException, SQLException {
         MemberDao memberDao = new MemberDao(dataSource);
@@ -123,5 +149,57 @@ class HttpServerTest {
         memberDao.insertMember(member);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectMembers");
         assertThat(client.getResponseBody()).contains("<li>Name: Arild Svensen - Email: arild@sykkel.no</li>");
+    }
+
+    @Test
+    void shouldReturnExistingTasks() throws IOException, SQLException {
+        TaskDao taskDao = new TaskDao(dataSource);
+        Task task = exampleTask();
+        taskDao.insertTask(task);
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectTasks");
+        assertThat(client.getResponseBody())
+                .contains(task.getTaskName());
+    }
+
+    @Test
+    void shouldReturnExistingProjects() throws IOException, SQLException {
+        ProjectDao projectDao = new ProjectDao(dataSource);
+        Project project = exampleProject();
+        projectDao.insert(project);
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectList");
+        assertThat(client.getResponseBody())
+                .contains(project.getProjectName());
+    }
+
+    @Test
+    void shouldFilterTasksByMemberAndStatus() throws SQLException, IOException {
+        MemberDao memberDao = new MemberDao(dataSource);
+        // Create member
+        Member m1 = exampleMember();
+
+        // Insert members to db
+        m1.setId(memberDao.insertMember(m1));
+
+        // Create task
+        TaskDao taskDao = new TaskDao(dataSource);
+        Task t1 = exampleTask();
+        t1.setId(taskDao.insertTask(t1));
+        Task t2 = new Task();
+        t2.setTaskName("Test");
+        t2.setDesc("Should not be there");
+        t2.setTaskStatus(false);
+        t2.setId(taskDao.insertTask(t2));
+
+        // Add members to task
+        MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
+        MemberTasks mt1 = new MemberTasks();
+        mt1.setMemberId(m1.getId());
+        mt1.setTaskId(t1.getId());
+        memberTasksDao.insert(mt1);
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectTasks?memberId=" + m1.getId() + "&status=true" );
+        assertThat(client.getResponseBody())
+                .contains("<br>Not assigned - " + t1.getTaskName() + " - Active - " + m1.getName())
+                .doesNotContain("<br>Not assigned - " + t2.getTaskName() + " - Inactive - " + m1.getName());
     }
 }

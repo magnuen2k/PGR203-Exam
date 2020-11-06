@@ -31,7 +31,7 @@ public class TaskAddToProjectController implements HttpController {
         Task task = taskDao.retrieve(taskId);
         task.setProjectId(projectId);
 
-        taskDao.update(task);
+        taskDao.addTaskToProject(task);
 
         HttpMessage redirect = new HttpMessage();
         redirect.setStartLine("HTTP/1.1 302 Redirect");

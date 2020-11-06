@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProjectDaoTest {
     private ProjectDao projectDao;
-    private Random r = new Random();
+    public static Random r = new Random();
 
     @BeforeEach
     void setUp() {
@@ -35,19 +35,19 @@ public class ProjectDaoTest {
                 .contains(project1.getProjectName(), project2.getProjectName());
     }
 
-    private Project exampleProject() {
+    public static Project exampleProject() {
         Project p = new Project();
         p.setProjectName(exampleProjectName());
         p.setDesc(exampleProjectDesc());
         return p;
     }
 
-    private String exampleProjectDesc() {
+    public static String exampleProjectDesc() {
         String[] options = {"We should make great pc for gaming!", "Hello gais! We play csgo with drink!", "To play pc u need to make good pc", "RP is good for heart!"};
         return options[r.nextInt(options.length)];
     }
 
-    private String exampleProjectName() {
+    public static String exampleProjectName() {
         String[] options = {"Build PC", "Drink PC", "Play PC", "RP THAT SHIT"};
         return options[r.nextInt(options.length)];
     }

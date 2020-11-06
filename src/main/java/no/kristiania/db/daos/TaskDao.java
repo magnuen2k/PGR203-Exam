@@ -17,17 +17,8 @@ public class TaskDao extends AbstractDao<Task>{
         return insert(task, "INSERT INTO tasks (task_name, task_desc, task_status) values (?, ?, ?)");
     }
 
-    public void update(Task task) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            // Create statement and execute it
-            try (PreparedStatement insertStatement = connection.prepareStatement(
-                    "UPDATE tasks SET project_id = (?) WHERE id = (?)"
-            )) {
-                insertStatement.setLong(1, task.getProjectId());
-                insertStatement.setLong(2, task.getId());
-                insertStatement.executeUpdate();
-            }
-        }
+    public void addTaskToProject(Task task) throws SQLException {
+        updateOneRow(task, "UPDATE tasks SET project_id = (?) WHERE id = (?)", task.getProjectId(), task.getId());
     }
 
     public void updateTask(Task task, long id) throws SQLException {
