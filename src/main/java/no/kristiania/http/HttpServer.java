@@ -52,7 +52,6 @@ public class HttpServer {
                 Map.entry("/api/editTasks", new TaskEditController(taskDao)),
                 Map.entry("/api/updateTasks", new TaskUpdateController(taskDao)),
                 Map.entry("/api/updateMemberTasks", new MemberTaskUpdateController(memberTasksDao))
-                // Map.entry("/api/filterTasksOnMember", new FilterTasksOnMemberController(memberDao, memberTasksDao, projectDao, taskDao))
         );
 
         serverSocket = new ServerSocket(port);
