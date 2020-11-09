@@ -1,5 +1,7 @@
 # The Exam 2020
 
+[GitHub repository](https://github.com/kristiania/pgr203eksamen-magnuen2k)
+
 ![Java CI with Maven](https://github.com/kristiania/pgr203innevering3-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
 
 ## How to run this program
