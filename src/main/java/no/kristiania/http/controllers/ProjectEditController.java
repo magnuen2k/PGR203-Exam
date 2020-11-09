@@ -24,22 +24,16 @@ public class ProjectEditController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-       // TODO add styling in css file
         return projectDao.list()
-                .stream().map(p -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                .stream().map(p -> "<div class='outputDiv'>" +
                         "<form method='POST' action='/api/updateProject'>" +
                         "<label>Project Name<input type='text' name='project_name' value='" + p.getProjectName() + "' /></label>" +
-                        "<label>Project ID<input type='hidden' name='id'' value='" + p.getId() + "'/></label>" +
-                        " - " + statusDropDown(p.getProjectStatus(), "project") +
-                        "<label>Project description <input type='text' name='project_desc' value='" + p.getDesc() + "' /></label>" +
+                        "<input type='hidden' name='id'' value='" + p.getId() + "'/>" +
+                        "Status - " + statusDropDown(p.getProjectStatus(), "project") +
+                        "<br><br><label>Project description <input type='text' name='project_desc' value='" + p.getDesc() + "' /></label>" +
                         "<br><button>Edit project</button>" +
                         "</form>" +
                         "</div>")
                 .collect(Collectors.joining());
     }
-    /*private String statusDropDown(boolean projectStatus) {
-        String status = projectStatus ? "Active" : "Inactive";
-        String notStatus = !projectStatus ? "Active" : "Inactive";
-        return "<select name='project_status'><option value='" + projectStatus + " '>" + status + "</option><option value='" + !projectStatus + "'>" + notStatus + "</option></select>";
-    }*/
 }

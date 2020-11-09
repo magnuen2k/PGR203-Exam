@@ -23,12 +23,12 @@ public class TaskEditController implements HttpController{
 
     public String getBody() throws SQLException {
         return taskDao.list()
-                .stream().map(t -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                .stream().map(t -> "<div class='outputDiv'>" +
                         "<form method='POST' action='/api/updateTasks'>" +
                         "<label>Task Name<input type='text' name='task_name' value='" + t.getTaskName() + "' /></label>" +
                         "<input type='hidden' name='id' value='" + t.getId() + "'/>" +
-                        " - " + statusDropDown(t.getTaskStatus(), "task") +
-                        "<label>Task description <input type='text' name='task_desc' value='" + t.getDesc() + "' /></label>" +
+                        "Status - " + statusDropDown(t.getTaskStatus(), "task") +
+                        "<br><br><label>Task description <input type='text' name='task_desc' value='" + t.getDesc() + "' /></label>" +
                         "<br><button>Edit task</button>" +
                         "</form>" +
                         "</div>")

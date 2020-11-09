@@ -5,7 +5,7 @@ public class Task {
     private long id;
     private String taskName;
     private String desc;
-    public boolean taskStatus;
+    private boolean taskStatus;
     private Long projectId;
 
     public String getTaskName() {

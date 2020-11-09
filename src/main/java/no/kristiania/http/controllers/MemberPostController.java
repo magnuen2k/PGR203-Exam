@@ -5,9 +5,9 @@ import no.kristiania.db.daos.MemberDao;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.http.HttpServer;
 import no.kristiania.http.QueryString;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;

@@ -78,12 +78,5 @@ public class TaskGetController implements HttpController {
         }
 
         return body.toString();
-
-        /*return taskDao.list()
-                .stream().map(t -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
-                        "<p>Task: " + t.getTaskName() + " - " + (t.getTaskStatus() ? "Active" : "Inactive") + "</p>" +
-                        "<p>Description: " + t.getDesc() + "</p>" +
-                        "</div>")
-                .collect(Collectors.joining());*/
     }
 }
