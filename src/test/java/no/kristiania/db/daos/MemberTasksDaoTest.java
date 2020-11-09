@@ -36,13 +36,13 @@ public class MemberTasksDaoTest {
         Member m1 = exampleMember();
 
         // Insert members to db
-        m1.setId(memberDao.insertMember(m1));
+        m1.setId(memberDao.insert(m1));
 
         // Create task
         Task t1 = TaskDaoTest.exampleTask();
-        t1.setId(taskDao.insertTask(t1));
+        t1.setId(taskDao.insert(t1));
         Task t2 = TaskDaoTest.exampleTask();
-        t2.setId(taskDao.insertTask(t2));
+        t2.setId(taskDao.insert(t2));
 
         // Add members to task
         MemberTasks mt1 = new MemberTasks();

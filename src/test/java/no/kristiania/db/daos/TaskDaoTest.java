@@ -1,6 +1,5 @@
 package no.kristiania.db.daos;
 
-import no.kristiania.db.daos.TaskDao;
 import no.kristiania.db.objects.Project;
 import no.kristiania.db.objects.Task;
 import org.flywaydb.core.Flyway;
@@ -33,8 +32,8 @@ public class TaskDaoTest {
     void shouldListAllTasks() throws SQLException {
         Task task1 = exampleTask();
         Task task2 = exampleTask();
-        taskDao.insertTask(task1);
-        taskDao.insertTask(task2);
+        taskDao.insert(task1);
+        taskDao.insert(task2);
         assertThat(taskDao.list())
                 .extracting(Task::getTaskName)
                 .contains(task1.getTaskName(), task2.getTaskName());
@@ -43,7 +42,7 @@ public class TaskDaoTest {
     @Test
     void checkIfTaskIsActiveAfterInsert() throws SQLException {
         Task task = exampleTask();
-        taskDao.insertTask(task);
+        taskDao.insert(task);
         assertThat(taskDao.list())
                 .extracting(Task::getTaskStatus)
                 .contains(task.getTaskStatus());
@@ -53,7 +52,7 @@ public class TaskDaoTest {
     void shouldAddTaskToProject() throws SQLException {
         // Create task
         Task task = exampleTask();
-        taskDao.insertTask(task);
+        taskDao.insert(task);
 
         // Create project
         Project project = exampleProject();

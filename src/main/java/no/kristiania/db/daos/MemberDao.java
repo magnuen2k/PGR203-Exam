@@ -12,7 +12,7 @@ public class MemberDao extends AbstractDao<Member> {
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
-    public long insertMember(Member member) throws SQLException {
+    public long insert(Member member) throws SQLException {
         return insert(member, "INSERT INTO members (first_name, last_name, email) values (?, ?, ?)");
     }
 

@@ -12,7 +12,7 @@ public class TaskDao extends AbstractDao<Task>{
     }
 
     // Passing in sql statement - INSERT INTO - to insert data
-    public long insertTask(Task task) throws SQLException {
+    public long insert(Task task) throws SQLException {
         return insert(task, "INSERT INTO tasks (task_name, task_desc, task_status) values (?, ?, ?)");
     }
 

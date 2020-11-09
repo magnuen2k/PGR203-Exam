@@ -146,7 +146,7 @@ class HttpServerTest {
         member.setFirstName("Arild");
         member.setLastName("Svensen");
         member.setEmail("arild@sykkel.no");
-        memberDao.insertMember(member);
+        memberDao.insert(member);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectMembers");
         assertThat(client.getResponseBody()).contains("<li>Name: Arild Svensen - Email: arild@sykkel.no</li>");
     }
@@ -155,7 +155,7 @@ class HttpServerTest {
     void shouldReturnExistingTasks() throws IOException, SQLException {
         TaskDao taskDao = new TaskDao(dataSource);
         Task task = exampleTask();
-        taskDao.insertTask(task);
+        taskDao.insert(task);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectTasks");
         assertThat(client.getResponseBody())
                 .contains(task.getTaskName());
@@ -178,17 +178,17 @@ class HttpServerTest {
         Member m1 = exampleMember();
 
         // Insert members to db
-        m1.setId(memberDao.insertMember(m1));
+        m1.setId(memberDao.insert(m1));
 
         // Create task
         TaskDao taskDao = new TaskDao(dataSource);
         Task t1 = exampleTask();
-        t1.setId(taskDao.insertTask(t1));
+        t1.setId(taskDao.insert(t1));
         Task t2 = new Task();
         t2.setTaskName("Test");
         t2.setDesc("Should not be there");
         t2.setTaskStatus(false);
-        t2.setId(taskDao.insertTask(t2));
+        t2.setId(taskDao.insert(t2));
 
         // Add members to task
         MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
@@ -223,7 +223,7 @@ class HttpServerTest {
 
         // Create task
         Task task = exampleTask();
-        task.setId(taskDao.insertTask(task));
+        task.setId(taskDao.insert(task));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateTasks", "POST", "task_name=yes&task_desc=dao&task_status=true&id=" + task.getId());
         assertThat(taskDao.retrieve(task.getId()))
@@ -237,7 +237,7 @@ class HttpServerTest {
 
         // Create member
         Member member = exampleMember();
-        member.setId(memberDao.insertMember(member));
+        member.setId(memberDao.insert(member));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateMember", "POST", "first_name=yes&last_name=dao&email=test%40yes&id=" + member.getId());
         assertThat(memberDao.retrieve(member.getId()))
@@ -250,12 +250,12 @@ class HttpServerTest {
         // Create member
         MemberDao memberDao = new MemberDao(dataSource);
         Member member = exampleMember();
-        member.setId(memberDao.insertMember(member));
+        member.setId(memberDao.insert(member));
 
         // Create task
         TaskDao taskDao = new TaskDao(dataSource);
         Task task = exampleTask();
-        task.setId(taskDao.insertTask(task));
+        task.setId(taskDao.insert(task));
 
         MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
 
@@ -270,7 +270,7 @@ class HttpServerTest {
         // Create task
         TaskDao taskDao = new TaskDao(dataSource);
         Task task = exampleTask();
-        task.setId(taskDao.insertTask(task));
+        task.setId(taskDao.insert(task));
 
         // Create project
         ProjectDao projectDao = new ProjectDao(dataSource);
@@ -288,11 +288,11 @@ class HttpServerTest {
         TaskDao taskDao = new TaskDao(dataSource);
         // Create example tasks
         Task task1 = exampleTask();
-        task1.setId(taskDao.insertTask(task1));
+        task1.setId(taskDao.insert(task1));
         Task task2 = exampleTask();
-        task2.setId(taskDao.insertTask(task2));
+        task2.setId(taskDao.insert(task2));
         Task task3 = exampleTask();
-        task3.setId(taskDao.insertTask(task3));
+        task3.setId(taskDao.insert(task3));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/taskOptions" );
         assertThat(client.getResponseBody())
@@ -320,11 +320,11 @@ class HttpServerTest {
         MemberDao memberDao = new MemberDao(dataSource);
         // Create example tasks
         Member m1 = exampleMember();
-        m1.setId(memberDao.insertMember(m1));
+        m1.setId(memberDao.insert(m1));
         Member m2 = exampleMember();
-        m2.setId(memberDao.insertMember(m2));
+        m2.setId(memberDao.insert(m2));
         Member m3 = exampleMember();
-        m3.setId(memberDao.insertMember(m3));
+        m3.setId(memberDao.insert(m3));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/memberOptions" );
         assertThat(client.getResponseBody())

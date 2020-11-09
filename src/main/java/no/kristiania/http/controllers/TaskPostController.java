@@ -43,7 +43,7 @@ public class TaskPostController implements HttpController {
         task.setTaskStatus(taskStatus);
 
         // Insert task object to db
-        task.setId(taskDao.insertTask(task));
+        task.setId(taskDao.insert(task));
 
         // Create response
         HttpMessage redirect = new HttpMessage();

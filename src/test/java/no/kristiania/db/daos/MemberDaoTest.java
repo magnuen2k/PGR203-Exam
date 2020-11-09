@@ -1,6 +1,5 @@
 package no.kristiania.db.daos;
 
-import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.objects.Member;
 import no.kristiania.db.objects.MemberTasks;
 import no.kristiania.db.objects.Task;
@@ -33,10 +32,10 @@ public class MemberDaoTest {
     @Test
     void shouldListInsertedMembers() throws SQLException {
 
-        memberDao.insertMember(exampleMember());
-        memberDao.insertMember(exampleMember());
+        memberDao.insert(exampleMember());
+        memberDao.insert(exampleMember());
         Member member = exampleMember();
-        member.setId(memberDao.insertMember(member));
+        member.setId(memberDao.insert(member));
         assertThat(member).hasNoNullFieldsOrProperties();
         assertThat(memberDao.retrieve(member.getId()))
                 .usingRecursiveComparison()
@@ -47,8 +46,8 @@ public class MemberDaoTest {
     void shouldReturnAllDataFromDatabase() throws SQLException {
         Member m1 = exampleMember();
         Member m2 = exampleMember();
-        memberDao.insertMember(m1);
-        memberDao.insertMember(m2);
+        memberDao.insert(m1);
+        memberDao.insert(m2);
 
         assertThat(memberDao.list())
                 .extracting(Member::getName)
@@ -66,7 +65,7 @@ public class MemberDaoTest {
     @Test
     void shouldUpdateMember() throws SQLException {
         Member m1 = exampleMember();
-        m1.setId(memberDao.insertMember(m1));
+        m1.setId(memberDao.insert(m1));
         Member m2 = exampleMember();
         memberDao.update(m2, m1.getId());
         assertThat(memberDao.retrieve(m1.getId()))
@@ -83,13 +82,13 @@ public class MemberDaoTest {
         Member m3 = exampleMember();
 
         // Insert member to db
-        m1.setId(memberDao.insertMember(m1));
-        m2.setId(memberDao.insertMember(m2));
-        m3.setId(memberDao.insertMember(m3));
+        m1.setId(memberDao.insert(m1));
+        m2.setId(memberDao.insert(m2));
+        m3.setId(memberDao.insert(m3));
 
         // Create task
         Task task = TaskDaoTest.exampleTask();
-        task.setId(taskDao.insertTask(task));
+        task.setId(taskDao.insert(task));
 
         // Add members to task
         MemberTasks mt1 = new MemberTasks();
