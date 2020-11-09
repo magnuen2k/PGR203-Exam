@@ -1,4 +1,4 @@
-# Assignment 3
+# The Exam 2020
 
 ![Java CI with Maven](https://github.com/kristiania/pgr203innevering3-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
 
