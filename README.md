@@ -2,7 +2,7 @@
 
 [Github repository](https://github.com/kristiania/pgr203eksamen-magnuen2k)
 
-![Java CI with Maven](https://github.com/kristiania/pgr203innevering3-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+![Java CI with Maven](https://github.com/kristiania/pgr203eksamen-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg)
 
 ## How to run this program
 ### Build an executable jar-file
