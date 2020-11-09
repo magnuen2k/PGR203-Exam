@@ -81,7 +81,7 @@ We are using 4 tables. The member_tasks table is just to connect members and tas
 We realized after consulting with Johannes and the project was more or less finished, that we could
 have used a slightly different approach, where we would have projects connected to members instead of tasks
 to make the datamodel a bit better, and it would be a better way of doing it i larger and more advanced projects.
-We did learn from it, and te application is ok for this project.
+We did learn from it, and the application is good enough for this project.
 ![UML image](https://user-images.githubusercontent.com/56038804/98135355-0583a600-1ec0-11eb-90d6-b8965e1efb21.png)
 ![UML image](https://user-images.githubusercontent.com/56038804/98588895-b9c06a80-22cc-11eb-95db-cba06285fde1.png)
 
