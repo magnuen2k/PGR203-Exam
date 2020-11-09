@@ -55,7 +55,7 @@ public class TaskGetController implements HttpController {
                             if(t.getProjectId() != null) {
                                 projectName = projectDao.retrieve(t.getProjectId()).getProjectName();
                             }
-                            return "<div class='outputDiv'>" + projectName + " - " + t.getTaskName() + " - " + (t.getTaskStatus() ? "Active" : "Inactive") + " - " + memberDao.retrieve(mt.getMemberId()).getName() + "</div>";
+                            return "<div class='outputDiv'>Project: " + projectName + " - Task: " + t.getTaskName() + " - Status: " + (t.getTaskStatus() ? "Active" : "Inactive") + " - Member: " + memberDao.retrieve(mt.getMemberId()).getName() + "</div>";
                         } catch (SQLException throwable) {
                             throwable.printStackTrace();
                             return null;
@@ -67,7 +67,11 @@ public class TaskGetController implements HttpController {
         // TODO Try using streams
         StringBuilder body = new StringBuilder();
         for(Task t : taskDao.list()) {
-            body.append("<div class='outputDiv'>" + "<p>Task: ").append(t.getTaskName()).append(" - ").append(t.getTaskStatus() ? "Active" : "Inactive").append("</p>").append("<p>Description: ").append(t.getDesc()).append("</p>");
+            String projectName = "Not assigned";
+            if(t.getProjectId() != null) {
+                projectName = projectDao.retrieve(t.getProjectId()).getProjectName();
+            }
+            body.append("<div class='outputDiv'>" + "<p>Task: ").append(t.getTaskName()).append(" - ").append(t.getTaskStatus() ? "Active" : "Inactive").append("</p>").append("<p>Description: ").append(t.getDesc()).append("</p>").append("<p>Project: ").append(projectName).append("</p>");
 
             body.append("<select>");
             List<Member> members = memberDao.getMembersOnTask(t.getId());

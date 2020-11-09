@@ -3,7 +3,10 @@ package no.kristiania.http.controllers;
 import no.kristiania.db.objects.Project;
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
 import no.kristiania.http.QueryString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +17,8 @@ import java.sql.SQLException;
 
 public class ProjectUpdateController implements HttpController {
     private final ProjectDao projectDao;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+
     public ProjectUpdateController(ProjectDao projectDao) {
         this.projectDao = projectDao;
     }
@@ -45,6 +50,7 @@ public class ProjectUpdateController implements HttpController {
 
         // Insert project object to db
         projectDao.update(project, projectId);
+        logger.info("Updated " + project.getProjectName() + " in the database");
 
         // Create response
         HttpMessage redirect = new HttpMessage();

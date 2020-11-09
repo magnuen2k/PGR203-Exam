@@ -3,7 +3,10 @@ package no.kristiania.http.controllers;
 import no.kristiania.db.objects.Task;
 import no.kristiania.db.daos.TaskDao;
 import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
 import no.kristiania.http.QueryString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,6 +16,7 @@ import java.sql.SQLException;
 
 public class TaskPostController implements HttpController {
     private final TaskDao taskDao;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public TaskPostController(TaskDao taskdao) {
         this.taskDao = taskdao;
@@ -44,6 +48,7 @@ public class TaskPostController implements HttpController {
 
         // Insert task object to db
         task.setId(taskDao.insert(task));
+        logger.info("Added " + task.getTaskName() + " to the database");
 
         // Create response
         HttpMessage redirect = new HttpMessage();

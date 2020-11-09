@@ -1,0 +1,29 @@
+@startuml
+
+actor User
+participant WebBrowser
+
+box Java Server
+   participant HttpServer
+   participant TaskGetController
+   participant TaskDao
+end box
+
+database PostgreSQL
+
+User -> WebBrowser: List tasks
+WebBrowser -> HttpServer: /tasks.html
+WebBrowser <-- HttpServer: <html>....<script>fetch()</html>
+WebBrowser -> HttpServer: /api/projectTasks
+HttpServer -> HttpServer: controllers.get("/api/projectTasks")
+note left of HttpServer: creating "routes" for different requests
+HttpServer -> TaskGetController: handle(HttpMessage request)
+TaskGetController -> TaskDao: list()
+TaskDao -> PostgreSQL: SELECT * FROM Tasks
+TaskDao <-- PostgreSQL: ResultSet
+TaskGetController <-- TaskDao: List<Task>
+HttpServer <-- TaskGetController: [HttpMessage response]
+WebBrowser <-- HttpServer: <div>Task name, status, assigned project, members</div>
+User <- WebBrowser: List of tasks
+
+@enduml

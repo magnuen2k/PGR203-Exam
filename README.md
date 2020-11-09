@@ -1,6 +1,6 @@
 # The Exam 2020
 
-[GitHub repository](https://github.com/kristiania/pgr203eksamen-magnuen2k)
+[Github repository](https://github.com/kristiania/pgr203eksamen-magnuen2k)
 
 ![Java CI with Maven](https://github.com/kristiania/pgr203innevering3-magnuen2k/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
 
@@ -78,7 +78,7 @@ The final result might reflect the fact that it is "home made", but it has been 
 we are quite proud of the end result.
 
 
-## Datamodel
+## Data model
 We are using 4 tables. The member_tasks table is just to connect members and tasks.
 We realized after consulting with Johannes and the project was more or less finished, that we could
 have used a slightly different approach, where we would have projects connected to members instead of tasks
@@ -86,6 +86,28 @@ to make the datamodel a bit better, and it would be a better way of doing it i l
 We did learn from it, and the application is good enough for this project.
 ![UML image](https://user-images.githubusercontent.com/56038804/98135355-0583a600-1ec0-11eb-90d6-b8965e1efb21.png)
 ![UML image](https://user-images.githubusercontent.com/56038804/98588895-b9c06a80-22cc-11eb-95db-cba06285fde1.png)
+![UML image](https://user-images.githubusercontent.com/56038804/98604287-ae2c6e00-22e3-11eb-8448-e485ea87231c.png)
+
+
+## Extra features added
+* Handling of request target "/"
+* Advanced data model with 3+ tables
+* Editing of members, tasks, projects and status (status can be changed on both tasks and projects)
+* UML diagram
+* Framework for HTTP-handling
+* DAO-pattern
+* Controller-pattern
+* Handling of norwegian characters in HTTP (extra declaration regarding this)
+* Automatic report with Github Actions
+* Getting all info on a task, like what members that are assigned to the task and what project it belongs to
+* A good filter functionality
+
+
+## What we want to be judged by
+Pretty much the entire solution. We want you to look at the work we have done, the time and effort put in to this, and
+the extra functionality added. We have used Github issues and pair programming a lot, and we have learned a bunch. 
+All three of us hope the final product reflects that effort and all those late hours put in to it.
+
 
 ### Contributors 
 Kai Amundsen, Stian Westerheim & Magnus Enholm

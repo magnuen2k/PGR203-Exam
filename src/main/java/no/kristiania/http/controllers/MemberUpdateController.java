@@ -3,7 +3,10 @@ package no.kristiania.http.controllers;
 import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.objects.Member;
 import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
 import no.kristiania.http.QueryString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,6 +16,7 @@ import java.sql.SQLException;
 
 public class MemberUpdateController implements HttpController{
     private final MemberDao memberDao;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public MemberUpdateController(MemberDao memberDao) {
         this.memberDao = memberDao;
@@ -47,6 +51,7 @@ public class MemberUpdateController implements HttpController{
 
         // Insert project object to db
         memberDao.update(member, memberId);
+        logger.info("Updated " + member.getName() + " in the database");
 
         HttpMessage redirect = new HttpMessage();
         redirect.setStartLine("HTTP/1.1 302 Redirect");

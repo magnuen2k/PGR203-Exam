@@ -3,7 +3,10 @@ package no.kristiania.http.controllers;
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.db.objects.Project;
 import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpServer;
 import no.kristiania.http.QueryString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,6 +16,7 @@ import java.sql.SQLException;
 
 public class ProjectPostController implements HttpController {
     private final ProjectDao projectDao;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public ProjectPostController(ProjectDao projectDao) {
         this.projectDao = projectDao;
@@ -44,6 +48,7 @@ public class ProjectPostController implements HttpController {
 
         // Insert project object to db
         projectDao.insert(project);
+        logger.info("Added " + project.getProjectName() + " to the database");
 
         // Create response
         HttpMessage redirect = new HttpMessage();
