@@ -199,7 +199,7 @@ class HttpServerTest {
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectTasks?memberId=" + m1.getId() + "&status=true" );
         assertThat(client.getResponseBody())
-                .contains("<br>Not assigned - " + t1.getTaskName() + " - Active - " + m1.getName())
-                .doesNotContain("<br>Not assigned - " + t2.getTaskName() + " - Inactive - " + m1.getName());
+                .contains(t1.getTaskName(), m1.getName())
+                .doesNotContain(t2.getTaskName());
     }
 }

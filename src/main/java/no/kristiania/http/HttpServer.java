@@ -135,7 +135,7 @@ public class HttpServer {
                 response.write(clientSocket);
             }
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            assert inputStream != null;
+            // assert inputStream != null;
             inputStream.transferTo(buffer);
 
             // If the file is HTML, make sure contentType is "text/html"

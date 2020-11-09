@@ -23,7 +23,7 @@ public class ProjectGetController implements HttpController {
 
     public String getBody() throws SQLException {
         return projectDao.list()
-                .stream().map(p -> "<div style='border: 2px solid black; margin-bottom: 20px'>" +
+                .stream().map(p -> "<div class='outputDiv'>" +
                         "<p>Project Name: " + p.getProjectName() + " - " + (p.getProjectStatus() ? "Active" : "Inactive") + "</p>" +
                         "<p>Project Description: " + p.getDesc() + "</p>" +
                         "</div>")

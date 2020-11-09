@@ -31,7 +31,7 @@ public class ProjectEditController implements HttpController {
                         "<form method='POST' action='/api/updateProject'>" +
                         "<label>Project Name<input type='text' name='project_name' value='" + p.getProjectName() + "' /></label>" +
                         "<label>Project ID<input type='hidden' name='id'' value='" + p.getId() + "'/></label>" +
-                        " - " + statusDropDown(p.getProjectStatus()) +
+                        " - " + statusDropDown(p.getProjectStatus(), "project") +
                         "<label>Project description <input type='text' name='project_desc' value='" + p.getDesc() + "' /></label>" +
                         "<br><button>Edit project</button>" +
                         "</form>" +

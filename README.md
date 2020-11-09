@@ -10,17 +10,36 @@
     * dataSource.url = jdbc:postgresql://localhost:5432/ + the name of the database.
     * dataSource.username = provide the username of the database owner.
     * dataSource.password = provide the password of the database owner.
-3. Run `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
+3. 
+    If you are using Mac run: `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
+    If you are using Windows run: `java -Dfile.encoding="UTF-8" -jar pgr203eksamen-1.0-SNAPSHOT.jar`.
+    (This is declared in the Declaration in the README.md).
 4. Go to `localhost:8080` to interact with the server.
 
 ## Program functionality
--The program is made to be used within the net browser(we have mainly tested it in chrome) by 
+-The program is developed to be used within the net browser(we have mainly tested it in chrome) by 
 visiting the address http://localhost:8080/index.html.
 -There is implemented a navigation menu in the program that should make it easy  to use.
 -There is functionality for adding members, projects and tasks, and you could assign multiple members to
 multiple tasks, and a task could be assigned to a project.
 -Status is assigned to every task and project, and could be set to active or inactive.
 -There is filtering functionality for filtering task on members and task status.
+
+## Declaration regarding runtime and bugs
+The code is mainly written on mac computers and testing has been done in intellij and chrome on mac machines.
+We have tried to look for bugs running the application on both mac and windows. There has been some issues regarding
+the UTF-8 decoding while running it from the executable .jar-file on windows exclusively and not on mac os.
+This bug does not happen while running it in intellij. This is a bug that occurs because the default encoding on
+windows when running .jar files is not UTF-8, while mac OS natively runs this in UTF-8.
+We did a lot of research regarding this issue, and the solution we ended up with is as follows:
+You run "java -Dfile.encoding="UTF-8" -jar pgr203eksamen-1.0-SNAPSHOT.jar" to make sure it encodes as UTF-8.
+This will force the encoding to be UTF-8 on things such as String.getBytes() or Charset.defaultCharSet().
+The result is that it will make the program accept norwegian characters such as "æ, ø, å/ Æ, Ø, Å", 
+and special characters like @.
+We also managed to force it using this source: 
+https://stackoverflow.com/questions/361975/setting-the-default-java-character-encoding/14987992#14987992.
+We did choose not to, because of the warnings it gave, and the fact that we are not familiar with the
+possible side effects and bugs that might occur and to stay on the safe path.
 
 ## Work process
 We have been working exclusively over GitHub and Discord while sharing screens and observing each other.

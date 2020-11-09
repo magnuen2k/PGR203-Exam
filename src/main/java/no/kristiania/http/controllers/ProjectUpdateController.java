@@ -6,6 +6,7 @@ import no.kristiania.http.HttpMessage;
 import no.kristiania.http.QueryString;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +24,7 @@ public class ProjectUpdateController implements HttpController {
         response.write(clientSocket);
     }
 
-    public HttpMessage handle(HttpMessage request) throws SQLException {
+    public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
         QueryString requestParameter = new QueryString(request.getBody());
 
         // Get data from POST
@@ -34,11 +35,12 @@ public class ProjectUpdateController implements HttpController {
 
         // Decode data
         String decodedProjectName = URLDecoder.decode(projectName, StandardCharsets.UTF_8); //Makes us able to use "æøå"
+        String decodedProjectDesc = URLDecoder.decode(projectDesc, StandardCharsets.UTF_8); //Makes us able to use "æøå"
 
         // Insert data to project object
         Project project = projectDao.retrieve(projectId);
         project.setProjectName(decodedProjectName);
-        project.setDesc(projectDesc);
+        project.setDesc(decodedProjectDesc);
         project.setProjectStatus(projectStatus);
 
         // Insert project object to db

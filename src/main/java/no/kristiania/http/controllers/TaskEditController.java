@@ -27,7 +27,7 @@ public class TaskEditController implements HttpController{
                         "<form method='POST' action='/api/updateTasks'>" +
                         "<label>Task Name<input type='text' name='task_name' value='" + t.getTaskName() + "' /></label>" +
                         "<input type='hidden' name='id' value='" + t.getId() + "'/>" +
-                        " - " + statusDropDown(t.getTaskStatus()) +
+                        " - " + statusDropDown(t.getTaskStatus(), "task") +
                         "<label>Task description <input type='text' name='task_desc' value='" + t.getDesc() + "' /></label>" +
                         "<br><button>Edit task</button>" +
                         "</form>" +
@@ -35,9 +35,9 @@ public class TaskEditController implements HttpController{
                 .collect(Collectors.joining());
     }
 
-    public static String statusDropDown(boolean statusState) {
+    public static String statusDropDown(boolean statusState, String type) {
         String status = statusState ? "Active" : "Inactive";
         String notStatus = !statusState ? "Active" : "Inactive";
-        return "<select name='task_status'><option value='" + statusState + " '>" + status + "</option><option value='" + !statusState + "'>" + notStatus + "</option></select>";
+        return "<select name='" + type + "_status'><option value='" + statusState + "'>" + status + "</option><option value='" + !statusState + "'>" + notStatus + "</option></select>";
     }
 }

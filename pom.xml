@@ -82,5 +82,8 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <encoding>utf-8</encoding>
+    </properties>
 
 </project>

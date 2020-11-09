@@ -21,24 +21,18 @@ public class MemberDao extends AbstractDao<Member> {
         update(member, "UPDATE members SET first_name = (?), last_name = (?), email = (?) WHERE id = (?)", id, 4);
     }
 
-    @Override
-    protected void insertObject(Member member, PreparedStatement insertStatement) throws SQLException {
-        insertStatement.setString(1, member.getFirstName());
-        insertStatement.setString(2, member.getLastName());
-        insertStatement.setString(3, member.getEmail());
-    }
-
     public Member retrieve(Long id) throws SQLException {
         return retrieve(id, "SELECT * FROM members WHERE id = ?");
     }
 
     // List all members in Database
     // Passing in sql statement - SELECT * - loop through result of select and return a List with all members
+
     public List<Member> list() throws SQLException {
        return list("SELECT * FROM members ORDER BY id ASC");
     }
-
     // Should not be a concatenated string
+
     public List<Member> getMembersOnTask(long id) throws SQLException {
         return list("select m.* " +
                 "from tasks t, members m, member_tasks mt " +
@@ -55,5 +49,12 @@ public class MemberDao extends AbstractDao<Member> {
         member.setLastName(rs.getString("last_name"));
         member.setEmail(rs.getString("email"));
         return member;
+    }
+
+    @Override
+    protected void insertObject(Member member, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setString(1, member.getFirstName());
+        insertStatement.setString(2, member.getLastName());
+        insertStatement.setString(3, member.getEmail());
     }
 }
