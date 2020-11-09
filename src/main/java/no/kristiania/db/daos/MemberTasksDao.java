@@ -19,6 +19,10 @@ public class MemberTasksDao extends AbstractDao<MemberTasks>{
         return retrieve(id, "SELECT * FROM member_tasks WHERE id = ?");
     }
 
+    public List<MemberTasks> list() throws SQLException {
+        return list("SELECT * FROM member_tasks");
+    }
+
     //There could potentially be SQL injection exploits a third party could take advantage of, caused by the
     //concatenation of the strings. We find this acceptable for this task, but would probably use a different approach
     //in a larger and public application.

@@ -202,4 +202,132 @@ class HttpServerTest {
                 .contains(t1.getTaskName(), m1.getName())
                 .doesNotContain(t2.getTaskName());
     }
+
+    @Test
+    void shouldUpdateProject() throws SQLException, IOException {
+        ProjectDao projectDao = new ProjectDao(dataSource);
+
+        // Create project
+        Project project = exampleProject();
+        project.setId(projectDao.insert(project));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateProject", "POST", "project_name=test&project_desc=dao&project_status=true&id=" + project.getId());
+        assertThat(projectDao.retrieve(project.getId()))
+                .extracting(Project::getProjectName)
+                .isEqualTo("test");
+    }
+
+    @Test
+    void shouldUpdateTask() throws SQLException, IOException {
+        TaskDao taskDao = new TaskDao(dataSource);
+
+        // Create task
+        Task task = exampleTask();
+        task.setId(taskDao.insertTask(task));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateTasks", "POST", "task_name=yes&task_desc=dao&task_status=true&id=" + task.getId());
+        assertThat(taskDao.retrieve(task.getId()))
+                .extracting(Task::getTaskName)
+                .isEqualTo("yes");
+    }
+
+    @Test
+    void shouldUpdateMember() throws SQLException, IOException {
+        MemberDao memberDao = new MemberDao(dataSource);
+
+        // Create member
+        Member member = exampleMember();
+        member.setId(memberDao.insertMember(member));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateMember", "POST", "first_name=yes&last_name=dao&email=test%40yes&id=" + member.getId());
+        assertThat(memberDao.retrieve(member.getId()))
+                .extracting(Member::getEmail)
+                .isEqualTo("test@yes");
+    }
+
+    @Test
+    void shouldAddMemberToTask() throws SQLException, IOException {
+        // Create member
+        MemberDao memberDao = new MemberDao(dataSource);
+        Member member = exampleMember();
+        member.setId(memberDao.insertMember(member));
+
+        // Create task
+        TaskDao taskDao = new TaskDao(dataSource);
+        Task task = exampleTask();
+        task.setId(taskDao.insertTask(task));
+
+        MemberTasksDao memberTasksDao = new MemberTasksDao(dataSource);
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/updateMemberTasks", "POST", "memberId=" + member.getId() + "&taskId=" + task.getId());
+        assertThat(memberTasksDao.list())
+                .extracting(MemberTasks::getMemberId)
+                .contains(member.getId());
+    }
+
+    @Test
+    void shouldAddTaskToProject() throws SQLException, IOException {
+        // Create task
+        TaskDao taskDao = new TaskDao(dataSource);
+        Task task = exampleTask();
+        task.setId(taskDao.insertTask(task));
+
+        // Create project
+        ProjectDao projectDao = new ProjectDao(dataSource);
+        Project project = exampleProject();
+        project.setId(projectDao.insert(project));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/addTaskToProject", "POST", "taskId=" + task.getId() + "&projectId=" + project.getId());
+        assertThat(taskDao.retrieve(task.getId()))
+                .extracting(Task::getProjectId)
+                .isEqualTo(project.getId());
+    }
+
+    @Test
+    void shouldGetAllTaskOptions() throws SQLException, IOException {
+        TaskDao taskDao = new TaskDao(dataSource);
+        // Create example tasks
+        Task task1 = exampleTask();
+        task1.setId(taskDao.insertTask(task1));
+        Task task2 = exampleTask();
+        task2.setId(taskDao.insertTask(task2));
+        Task task3 = exampleTask();
+        task3.setId(taskDao.insertTask(task3));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/taskOptions" );
+        assertThat(client.getResponseBody())
+                .contains("<option value=" + task1.getId() + ">" + task1.getTaskName() + "</option>");
+    }
+
+    @Test
+    void shouldGetAllProjectOptions() throws SQLException, IOException {
+        ProjectDao projectDao = new ProjectDao(dataSource);
+        // Create example tasks
+        Project p1 = exampleProject();
+        p1.setId(projectDao.insert(p1));
+        Project p2 = exampleProject();
+        p2.setId(projectDao.insert(p2));
+        Project p3 = exampleProject();
+        p3.setId(projectDao.insert(p3));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/projectOptions" );
+        assertThat(client.getResponseBody())
+                .contains("<option value=" + p1.getId() + ">" + p1.getProjectName() + "</option>");
+    }
+
+    @Test
+    void shouldGetAllMemberOptions() throws SQLException, IOException {
+        MemberDao memberDao = new MemberDao(dataSource);
+        // Create example tasks
+        Member m1 = exampleMember();
+        m1.setId(memberDao.insertMember(m1));
+        Member m2 = exampleMember();
+        m2.setId(memberDao.insertMember(m2));
+        Member m3 = exampleMember();
+        m3.setId(memberDao.insertMember(m3));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/memberOptions" );
+        assertThat(client.getResponseBody())
+                .contains("<option value=" + m1.getId() + ">" + m1.getName() + "</option>");
+    }
 }
