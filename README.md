@@ -17,13 +17,13 @@
 4. Go to `localhost:8080` to interact with the server.
 
 ## Program functionality
-*The program is developed to be used within the net browser(we have mainly tested it in chrome) by 
+* The program is developed to be used within the net browser(we have mainly tested it in chrome) by 
 visiting the address http://localhost:8080/index.html.
-*There is implemented a navigation menu in the program that should make it easy  to use.
-*There is functionality for adding members, projects and tasks, and you could assign multiple members to
+* There is implemented a navigation menu in the program that should make it easy  to use.
+* There is functionality for adding members, projects and tasks, and you could assign multiple members to
 multiple tasks, and a task could be assigned to a project.
-*Status is assigned to every task and project, and could be set to active or inactive.
-*There is filtering functionality for filtering task on members and task status.
+* Status is assigned to every task and project, and could be set to active or inactive.
+* There is filtering functionality for filtering task on members and task status.
 
 ## Declaration regarding runtime and bugs
 The code is mainly written on mac computers and testing has been done in intellij and chrome on mac machines.
@@ -62,15 +62,15 @@ This did not work out, and we had to manually fix it,
 or revert changes back to the previous commit. We did resolve the issues, but the extra commits remain on the branch. 
 
 ## Things learned during the project
-*The usage of GitHub issues has made it way more easy to stay on point and not get too distracted. It has also made
+* The usage of GitHub issues has made it way more easy to stay on point and not get too distracted. It has also made
 the communication better within the group. Issues via github is really a great feature.
-*Ping pong programming works well in some cases, but there is also other efficient ways of working while being
+* Ping pong programming works well in some cases, but there is also other efficient ways of working while being
 multiple people working on the same issue/ problem.
-*Communication is key and the communication and planning has always been great. This sets the bar for the exam for sure.
-*We have still managed to learn some new "dos and don'ts" when it comes to github. This is declared in the work process.
-*It is important to take on a project step by step, and frequent breaks is key to productivity. Our general productivity
+* Communication is key and the communication and planning has always been great. This sets the bar for the exam for sure.
+* We have still managed to learn some new "dos and don'ts" when it comes to github. This is declared in the work process.
+* It is important to take on a project step by step, and frequent breaks is key to productivity. Our general productivity
 and common sense drops, if there is too long in between each break.
-*It is the very first time we have ever worked on a project of this scale, some fixes and implementations might
+* It is the very first time we have ever worked on a project of this scale, some fixes and implementations might
 be less ideal, but there has been countless hours of brainstorming and problem fixing to get to where we are at now.
 The final result might reflect the fact that it is "home made", but it has been working fine during our testing, and
 we are quite proud of the end result.
