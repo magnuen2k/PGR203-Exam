@@ -17,7 +17,7 @@ import java.sql.SQLException;
 
 public class MemberPostController implements HttpController {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
-    private MemberDao memberDao;
+    private final MemberDao memberDao;
 
     public MemberPostController(MemberDao memberDao) {
         this.memberDao = memberDao;

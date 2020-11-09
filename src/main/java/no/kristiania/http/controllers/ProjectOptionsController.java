@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 public class ProjectOptionsController implements HttpController {
-    private ProjectDao projectDao;
+    private final ProjectDao projectDao;
 
     public ProjectOptionsController(ProjectDao projectDao) {
         this.projectDao = projectDao;

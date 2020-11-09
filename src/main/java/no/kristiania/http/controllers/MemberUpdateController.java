@@ -2,7 +2,6 @@ package no.kristiania.http.controllers;
 
 import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.objects.Member;
-import no.kristiania.db.objects.Project;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.http.QueryString;
 
@@ -13,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class MemberUpdateController implements HttpController{
-    private MemberDao memberDao;
+    private final MemberDao memberDao;
 
     public MemberUpdateController(MemberDao memberDao) {
         this.memberDao = memberDao;

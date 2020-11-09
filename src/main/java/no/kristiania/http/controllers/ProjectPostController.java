@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class ProjectPostController implements HttpController {
-    private ProjectDao projectDao;
+    private final ProjectDao projectDao;
 
     public ProjectPostController(ProjectDao projectDao) {
         this.projectDao = projectDao;

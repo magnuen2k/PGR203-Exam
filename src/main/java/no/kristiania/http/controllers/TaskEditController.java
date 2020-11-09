@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 public class TaskEditController implements HttpController{
-    private TaskDao taskDao;
+    private final TaskDao taskDao;
 
     public TaskEditController(TaskDao taskDao) {
         this.taskDao = taskDao;

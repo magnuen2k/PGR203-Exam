@@ -2,7 +2,6 @@ package no.kristiania.http.controllers;
 
 import no.kristiania.db.daos.MemberDao;
 import no.kristiania.http.HttpMessage;
-import no.kristiania.http.controllers.HttpController;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 
 public class MemberEditController implements HttpController {
-    private MemberDao memberDao;
+    private final MemberDao memberDao;
 
     public MemberEditController(MemberDao memberDao) {
         this.memberDao = memberDao;
@@ -20,8 +19,8 @@ public class MemberEditController implements HttpController {
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws SQLException, IOException {
-        HttpMessage respone = new HttpMessage(getBody());
-        respone.write(clientSocket);
+        HttpMessage response = new HttpMessage(getBody());
+        response.write(clientSocket);
     }
 
     private String getBody() throws SQLException {

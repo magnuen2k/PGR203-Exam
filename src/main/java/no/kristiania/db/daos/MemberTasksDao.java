@@ -1,6 +1,5 @@
 package no.kristiania.db.daos;
 
-import no.kristiania.db.objects.Member;
 import no.kristiania.db.objects.MemberTasks;
 
 import javax.sql.DataSource;

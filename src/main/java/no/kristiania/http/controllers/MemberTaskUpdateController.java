@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 
 public class MemberTaskUpdateController implements HttpController {
-    private MemberTasksDao memberTasksDao;
+    private final MemberTasksDao memberTasksDao;
 
     public MemberTaskUpdateController(MemberTasksDao memberTasksDao) {
         this.memberTasksDao = memberTasksDao;

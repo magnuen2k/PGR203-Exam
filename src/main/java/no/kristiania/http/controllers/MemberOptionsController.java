@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 public class MemberOptionsController implements HttpController {
-    private MemberDao memberDao;
+    private final MemberDao memberDao;
 
     public MemberOptionsController(MemberDao memberDao) {
         this.memberDao = memberDao;

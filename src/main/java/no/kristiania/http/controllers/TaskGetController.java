@@ -4,7 +4,6 @@ import no.kristiania.db.daos.MemberDao;
 import no.kristiania.db.daos.MemberTasksDao;
 import no.kristiania.db.daos.ProjectDao;
 import no.kristiania.db.objects.Member;
-import no.kristiania.db.objects.MemberTasks;
 import no.kristiania.db.objects.Task;
 import no.kristiania.db.daos.TaskDao;
 import no.kristiania.http.HttpMessage;
@@ -13,15 +12,14 @@ import no.kristiania.http.QueryString;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TaskGetController implements HttpController {
-    private TaskDao taskDao;
-    private MemberTasksDao memberTasksDao;
-    private MemberDao memberDao;
-    private ProjectDao projectDao;
+    private final TaskDao taskDao;
+    private final MemberTasksDao memberTasksDao;
+    private final MemberDao memberDao;
+    private final ProjectDao projectDao;
 
     public TaskGetController(TaskDao taskdao, MemberTasksDao memberTasksDao, MemberDao memberDao, ProjectDao projectDao) {
         this.taskDao = taskdao;

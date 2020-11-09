@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class TaskPostController implements HttpController {
-    private TaskDao taskDao;
+    private final TaskDao taskDao;
 
     public TaskPostController(TaskDao taskdao) {
         this.taskDao = taskdao;

@@ -1,7 +1,6 @@
 package no.kristiania.http.controllers;
 
 import no.kristiania.db.daos.TaskDao;
-import no.kristiania.db.objects.Project;
 import no.kristiania.db.objects.Task;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.http.QueryString;
@@ -13,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class TaskUpdateController implements HttpController{
-    private TaskDao taskDao;
+    private final TaskDao taskDao;
 
     public TaskUpdateController(TaskDao taskDao) {
         this.taskDao = taskDao;

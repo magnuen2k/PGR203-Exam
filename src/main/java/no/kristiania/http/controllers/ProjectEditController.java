@@ -1,7 +1,6 @@
 package no.kristiania.http.controllers;
 
 import no.kristiania.db.daos.ProjectDao;
-import no.kristiania.db.objects.Project;
 import no.kristiania.http.HttpMessage;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 import static no.kristiania.http.controllers.TaskEditController.statusDropDown;
 
 public class ProjectEditController implements HttpController {
-    private ProjectDao projectDao;
+    private final ProjectDao projectDao;
 
     public ProjectEditController(ProjectDao projectDao) {
         this.projectDao = projectDao;
