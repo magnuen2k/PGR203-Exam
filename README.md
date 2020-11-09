@@ -11,8 +11,8 @@
     * dataSource.username = provide the username of the database owner.
     * dataSource.password = provide the password of the database owner.
 3. 
-    If you are using Mac run: `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
-    If you are using Windows run: `java -Dfile.encoding="UTF-8" -jar pgr203eksamen-1.0-SNAPSHOT.jar`.
+    -If you are using Mac run: `java -jar target/eksamen-pgr203-1.0-SNAPSHOT.jar`.
+    -If you are using Windows run: `java -Dfile.encoding="UTF-8" -jar pgr203eksamen-1.0-SNAPSHOT.jar`.
     [This is declared here](https://github.com/kristiania/pgr203eksamen-magnuen2k/blob/master/README.md#declaration-regarding-runtime-and-bugs)
 4. Go to `localhost:8080` to interact with the server.
 
