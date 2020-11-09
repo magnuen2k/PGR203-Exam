@@ -41,7 +41,7 @@ https://stackoverflow.com/questions/361975/setting-the-default-java-character-en
 We did choose not to, because of the warnings it gave, and the fact that we are not familiar with the
 possible side effects and bugs that might occur and to stay on the safe path.
 
-## Work process
+## The work process
 We have been working exclusively over GitHub and Discord while sharing screens and observing each other.
 We have also been doing some ping pong programming and quite a bit of test driven development for some of
 the more challenging parts that was outside of the syllabus.
@@ -61,7 +61,7 @@ github did recommend using github desktop (the issues because we changed the fil
 This did not work out, and we had to manually fix it, 
 or revert changes back to the previous commit. We did resolve the issues, but the extra commits remain on the branch. 
 
-## Things learned while working like this
+## Things learned during the project
 -The usage of GitHub issues has made it way more easy to stay on point and not get too distracted. It has also made
 the communication better within the group. Issues via github is really a great feature.
 -Ping pong programming works well in some cases, but there is also other efficient ways of working while being
